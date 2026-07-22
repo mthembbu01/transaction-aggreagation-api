@@ -1,4 +1,4 @@
-package za.co.capitec.loans;
+package za.co.capitec.accounts;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest
-class LoansApplicationTests {
+class AccountsAppTests {
 
 	@Test
 	void contextLoads() {

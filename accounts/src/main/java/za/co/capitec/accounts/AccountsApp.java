@@ -1,13 +1,13 @@
-package za.co.capitec.loans;
+package za.co.capitec.accounts;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LoansApplication {
+public class AccountsApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LoansApplication.class, args);
+		SpringApplication.run(AccountsApp.class, args);
 	}
 
 }
