@@ -36,17 +36,17 @@ public class AccountsController {
         return new ResponseEntity<>(null,HttpStatus.OK);
     }
 
-    //-- http://localhost:8080/api/v1/search?idNumber=123456&mobileNumber=0788298725
+    //-- http://localhost:8080/api/v1/search?idNumber=123456
     @GetMapping(path = "/search")
-    public ResponseEntity<Object> handleFindBySearchCriteria(@RequestParam("idNumber") String idNumber, @RequestParam("mobileNumber") String mobileNumber) {
-        log.info("Received find account by records criteria request for idNumber: {} and mobileNumber: {}", idNumber, mobileNumber);
+    public ResponseEntity<Object> handleFindByIDNumber(@RequestParam("idNumber") String idNumber) {
+        log.info("Received find account by ID Number: {}", idNumber);
         return new ResponseEntity<>(null,HttpStatus.OK);
     }
 
     //-- http://localhost:8080/api/v1/
     @PostMapping
     public ResponseEntity<Object> handleCreate(@RequestBody CreateAccountsDto createAccountsDto) {
-        log.info("Received create new applicant {}", createAccountsDto);
+        log.info("Received create new account request {}", createAccountsDto);
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
     //-- http://localhost:8080/api/v1/1

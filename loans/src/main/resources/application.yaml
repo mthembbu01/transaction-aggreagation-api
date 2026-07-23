@@ -1,3 +1,36 @@
 spring:
   application:
     name: loans
+  threads:
+    virtual:
+      enabled: true
+  main:
+    allow-circular-references: true
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false
+              lower-case-service-id: true
+
+# spring cloud configuration
+eureka:
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.application.name}:${instanceId:${random.value}}
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+  #-- enable the gzip configs
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,application/json,application/xml,text/css,text/javascript,application/javascript
+    min-response-size: 2KB
+  port: 0
+  shutdown: graceful

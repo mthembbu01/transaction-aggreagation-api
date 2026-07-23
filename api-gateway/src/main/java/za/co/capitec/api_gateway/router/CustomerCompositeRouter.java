@@ -15,10 +15,11 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 public class CustomerCompositeRouter {
     @Bean
     public RouterFunction<ServerResponse> route(CustomerCompositeHandler compositeHandler, ParameterNamesModule parameterNamesModule) {
-        return RouterFunctions.route(RequestPredicates.GET("/api/composite/fetchCustomerSummary")
+        return RouterFunctions.route(RequestPredicates.GET("/api/composite/customersummary")
                 .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
-                                .and(RequestPredicates.queryParam("mobileNumber", param -> true))
-                        .and(RequestPredicates.queryParam("accountNumber", param -> true))
+                                .and(RequestPredicates.queryParam("idNumber", param -> true))
+                        .and(RequestPredicates.queryParam("startDate", param -> true))
+                        .and(RequestPredicates.queryParam("endDate", param -> true))
                 , compositeHandler::fetchCustomerSummary);
     }
 }
