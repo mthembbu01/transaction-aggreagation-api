@@ -2,16 +2,12 @@ package za.co.capitec.accounts.services.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import za.co.capitec.accounts.dtos.records.AccountsRecord;
 import za.co.capitec.accounts.dtos.requests.TransactionDto;
-import za.co.capitec.accounts.dtos.response.AccountTransaction;
 import za.co.capitec.accounts.dtos.response.ResponseDto;
 import za.co.capitec.accounts.dtos.response.TransactionResponse;
 import za.co.capitec.accounts.entity.Accounts;

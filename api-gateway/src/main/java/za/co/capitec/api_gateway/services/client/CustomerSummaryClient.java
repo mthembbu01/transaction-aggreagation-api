@@ -17,14 +17,31 @@ public interface CustomerSummaryClient {
     @GetExchange(value = "/capitec/customer/api/v1/{idNumber}",accept = "application/json")
     Mono<ResponseEntity<CustomerDto>> fetchCustomerDetails(@PathVariable(value = "idNumber") String idNumber);
 
-    @GetExchange(value = "/capitec/accounts/api/v1/{idNumber}",accept = "application/json")
+    @GetExchange(value = "/capitec/accounts/api/v1/transaction/{idNumber}/{startDate}/{endDate}",accept = "application/json")
     Mono<ResponseEntity<List<AccountTransaction>>> fetchAccountTransactions(@PathVariable(value = "idNumber") String idNumber,
-                                                                            @RequestParam(value = "startDate") String startDate,
-                                                                            @RequestParam(value = "endDate") String endDate);
+                                                                            @PathVariable(value = "startDate") String startDate,
+                                                                            @PathVariable(value = "endDate") String endDate,
+                                                                            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                                            @RequestParam(value = "sortBy", defaultValue = "date", required = false) String sortBy,
+                                                                            @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir);
 
-//    @GetExchange(value = "/eazybank/loans/api/fetch",accept = "application/json")
-//    Mono<ResponseEntity<LoanTransaction>> fetchLoanDetails(@RequestParam(value = "idNumber") String idNumber);
-//
-//    @GetExchange(value = "/eazybank/cards/api/fetch",accept = "application/json")
-//    Mono<ResponseEntity<CardsDto>> fetchCardDetails(@RequestParam(value = "idNumber") String idNumber);
+    @GetExchange(value = "/capitec/creditcards/api/v1/transaction/{idNumber}/{startDate}/{endDate}",accept = "application/json")
+    Mono<ResponseEntity<List<AccountTransaction>>> fetchCreditCardTransactions(@PathVariable(value = "idNumber") String idNumber,
+                                                                            @PathVariable(value = "startDate") String startDate,
+                                                                            @PathVariable(value = "endDate") String endDate,
+                                                                            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                                            @RequestParam(value = "sortBy", defaultValue = "date", required = false) String sortBy,
+                                                                            @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir);
+
+    @GetExchange(value = "/capitec/loans/api/v1/transaction/{idNumber}/{startDate}/{endDate}",accept = "application/json")
+    Mono<ResponseEntity<List<AccountTransaction>>> fetchLoanTransactions(@PathVariable(value = "idNumber") String idNumber,
+                                                                            @PathVariable(value = "startDate") String startDate,
+                                                                            @PathVariable(value = "endDate") String endDate,
+                                                                            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                                            @RequestParam(value = "sortBy", defaultValue = "date", required = false) String sortBy,
+                                                                            @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir);
+
 }

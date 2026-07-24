@@ -50,13 +50,13 @@ public class AccountsTransactionsController {
      * @return
      */
     @GetMapping("/{idNumber}/{startDate}/{endDate}")
-    public ResponseEntity<TransactionResponse> handleFindAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+    public ResponseEntity<TransactionResponse> handleFindAll(@PathVariable("idNumber") @Pattern(regexp = "\\d{13}") String idNumber,
+                                                             @PathVariable("startDate") LocalDate startDate,
+                                                             @PathVariable("endDate") LocalDate endDate,
+                                                             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
                                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                                              @RequestParam(value = "sortBy", defaultValue = "date", required = false) String sortBy,
-                                                             @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir,
-                                                             @PathVariable("idNumber") @Pattern(regexp = "\\d{13}") String idNumber,
-                                                             @PathVariable("startDate") LocalDate startDate,
-                                                             @PathVariable("endDate") LocalDate endDate) {
+                                                             @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir) {
         log.info("Find all transactions for idNumber: {} from: {} to: {}", idNumber, startDate, endDate);
         return new ResponseEntity<>(service.findAllByIdNumber(pageNo, pageSize, sortBy, sortDir, idNumber, startDate, endDate), HttpStatus.OK);
     }

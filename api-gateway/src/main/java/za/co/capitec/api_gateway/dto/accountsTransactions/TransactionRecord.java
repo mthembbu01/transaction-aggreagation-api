@@ -15,3 +15,5 @@ public record TransactionRecord(AccountType accountType,
                                 String reference,
                                 LocalTime time,
                                 LocalDate date) { }
+
+
