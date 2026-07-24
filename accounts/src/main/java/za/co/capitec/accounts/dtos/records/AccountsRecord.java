@@ -1,5 +1,6 @@
 package za.co.capitec.accounts.dtos.records;
 
+
 import za.co.capitec.accounts.enums.AccountType;
 
 public record AccountsRecord(Long accountNumber,
