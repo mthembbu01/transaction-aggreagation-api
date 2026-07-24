@@ -32,8 +32,8 @@ public class Transactions {
     private Categories category;
 
     private String description;
-    private Double amount;
-    private Boolean isImmediate = Boolean.FALSE;
+    private BigDecimal amount;
+    private Boolean isImmediate;
     private String reference;
     private LocalTime time;
     private LocalDate date;
@@ -48,7 +48,7 @@ public class Transactions {
      * @param reference
      * @return
      */
-    public static Transactions create(Accounts accounts, String description, Boolean isImmediate, Double amount, Categories category, String reference){
+    public static Transactions create(Accounts accounts, String description, Boolean isImmediate, BigDecimal amount, Categories category, String reference){
         return Transactions
                 .builder()
                 .accounts(accounts)

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import za.co.capitec.accounts.enums.AccountType;
 
+import java.math.BigDecimal;
+
 
 @Table(name = "accounts")
 @Entity(name = "accounts")
@@ -23,7 +25,7 @@ public class Accounts extends BaseEntity {
     private Long accountNumber;
     @Enumerated(EnumType.STRING)
     private AccountType accountType; // SAVINGS, CHEQUE, Transactional
-    private Double balance;
+    private BigDecimal balance;
     private String mobileNumber;
     private String idNumber;
     private String branchAddress;

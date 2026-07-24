@@ -12,9 +12,8 @@ import java.time.LocalDate;
 public class TransactionDto {
     private Long accountNumber;
     private String description;
-    private Double amount;
-    private Boolean isImmediate = Boolean.FALSE;
-    private LocalDate timestamp;
+    private BigDecimal amount;
+    private Boolean isImmediate;
     private Categories category;
     private String reference;
 }

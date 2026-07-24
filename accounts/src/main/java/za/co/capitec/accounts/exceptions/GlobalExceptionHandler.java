@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(InsufficientFundsException.class)
     public ApiErrorResponse handleInsufficientFundsException(
             InsufficientFundsException ex,
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
             HandlerMethod method) {
 
         return new ApiErrorResponse(
-                HttpStatus.CONFLICT,
+                HttpStatus.UNPROCESSABLE_ENTITY,
                 ex.getMessage(),
                 exchange.getRequest().getURI().getPath(),
                 method.getMethod().getName(),

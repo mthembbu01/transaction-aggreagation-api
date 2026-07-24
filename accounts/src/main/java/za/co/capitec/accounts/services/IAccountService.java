@@ -14,5 +14,7 @@ public interface IAccountService {
     ResponseDto updateAccountByAccNumber(Long accountNumber, UpdateAccountDto updateAccountDto);
     ResponseDto deleteAccountByAccNumber(Long accountNumber);
     AccountsRecord findByAccNumber(Long accountNumber);
+    Accounts findAccounts(Long accountNumber);
+    ResponseDto saveAccount(Accounts account);
     List<AccountsRecord> findAccountsByIdNumber(String idNumber);
 }

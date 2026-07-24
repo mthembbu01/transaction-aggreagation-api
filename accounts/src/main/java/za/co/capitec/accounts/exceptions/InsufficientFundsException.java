@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-@ResponseStatus(value = HttpStatus.CONFLICT)
+@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
 public class InsufficientFundsException extends RuntimeException {
     public InsufficientFundsException(String insufficientFunds) {
         super(insufficientFunds);

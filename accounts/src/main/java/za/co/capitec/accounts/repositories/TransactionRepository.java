@@ -8,8 +8,8 @@ import za.co.capitec.accounts.entity.Transactions;
 import java.time.LocalDate;
 
 public interface TransactionRepository extends JpaRepository<Transactions,Long> {
-    Page<Transactions> findByAccountsAccountNumberAndDateBetween(Pageable pageable,
-                                                                 Long accountNumber,
+    Page<Transactions> findByAccountsIdNumberAndDateBetween(Pageable pageable,
+                                                                 String idNumber,
                                                                  LocalDate dateFrom,
                                                                  LocalDate dateTo);
 }

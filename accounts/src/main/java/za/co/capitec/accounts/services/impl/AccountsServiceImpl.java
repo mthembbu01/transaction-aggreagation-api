@@ -17,6 +17,7 @@ import za.co.capitec.accounts.repositories.AccountsRepository;
 import za.co.capitec.accounts.services.IAccountService;
 import za.co.capitec.accounts.utilities.AccountUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -115,7 +116,7 @@ public class AccountsServiceImpl implements IAccountService {
         //-- 1. Find the account by accountNumber
         Accounts accounts = findAccounts(accountNumber);
         //-- update the new attributes
-        accounts.setBalance(0.0);
+        accounts.setBalance(BigDecimal.ZERO);
         accounts.setActiveSw(false);
         //-- update the accounts object
         Accounts updatedAccount = accountsRepository.save(accounts);
@@ -138,13 +139,23 @@ public class AccountsServiceImpl implements IAccountService {
         if(isExistByMobileNumber)
             throw new ResourceAlreadyExistsException("Account","Mobile Number",mobileNumber);
     }
-
+    /**
+     *
+     * @param account
+     * @return
+     */
+    @Override
+    public ResponseDto saveAccount(Accounts account) {
+        Accounts savedAccount = accountsRepository.save(account);
+        return new ResponseDto(AccountsConstants.MESSAGE_200, AccountsConstants.STATUS_200);
+    }
     /**
      * Finds Accounts by Account Number
      * @param accountNumber
      * @return
      */
-    private Accounts findAccounts(Long accountNumber){
+    @Override
+    public Accounts findAccounts(Long accountNumber){
        return  accountsRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(()-> new ResourceNotFoundException("Customer Account","Account Number",String.valueOf(accountNumber)));
     }
