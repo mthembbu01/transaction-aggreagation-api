@@ -4,8 +4,7 @@ import jakarta.validation.constraints.Pattern;
 
 public record CreateAccountsDto(String accountType,
                                 @Pattern(regexp = "^(\\+27|0)?[1-9]\\d{8}$", message = "Invalid mobile number")
-                          String mobileNumber,
+                                String mobileNumber,
                                 @Pattern(regexp = "^\\d{13}$", message = "Invalid ID Number")
-                          String idNumber,
-                                String branchAddress,
-                                boolean activeSw){}
+                                String idNumber,
+                                String branchAddress){}

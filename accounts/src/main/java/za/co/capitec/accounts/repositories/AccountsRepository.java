@@ -9,4 +9,7 @@ import java.util.Optional;
 public interface AccountsRepository extends JpaRepository<Accounts,Long> {
     Optional<Accounts> findByAccountNumber(Long accountNumber);
     List<Accounts> findAllByIdNumber(String idNumber);
+
+    boolean existsByIdNumber(String idNumber);
+    boolean existsByMobileNumber(String mobileNumber);
 }

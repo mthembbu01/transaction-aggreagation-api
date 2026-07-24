@@ -22,4 +22,8 @@ public interface CreditCardRepository extends JpaRepository<CreditCards, Long> {
     Page<CreditCards> findAllByIdNumber(String idNumber, Pageable pageable);
 
     Optional<CreditCards> findByMobileNumber(String mobileNumber);
+
+    boolean existsByIdNumber(String idNumber);
+
+    boolean existsByMobileNumber(String mobileNumber);
 }

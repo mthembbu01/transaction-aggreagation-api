@@ -1,0 +1,133 @@
+package za.co.capitec.accounts.services.impl;
+
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import za.co.capitec.accounts.constants.AccountsConstants;
+import za.co.capitec.accounts.dtos.records.AccountsRecord;
+import za.co.capitec.accounts.dtos.requests.CreateAccountsDto;
+import za.co.capitec.accounts.dtos.requests.UpdateAccountDto;
+import za.co.capitec.accounts.dtos.response.ResponseDto;
+import za.co.capitec.accounts.entity.Accounts;
+import za.co.capitec.accounts.exceptions.ResourceAlreadyExistsException;
+import za.co.capitec.accounts.exceptions.ResourceNotFoundException;
+import za.co.capitec.accounts.repositories.AccountsRepository;
+import za.co.capitec.accounts.services.IAccountService;
+import za.co.capitec.accounts.utilities.AccountUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class AccountsServiceImpl implements IAccountService {
+
+    private final String ACCOUNTS_CACHE_KEY = "accounts";
+
+    private final AccountsRepository accountsRepository;
+
+    private final ModelMapper modelMapper;
+
+    /**
+     * The method to create an account for a customer. It first maps the CreateAccountsDto to Accounts entity,
+     * checks if the account already exists based on unique attributes (ID Number and Mobile Number),
+     * saves the new account, and returns a response indicating success.
+     * @param createAccountsDto
+     * @return
+     */
+    @Override
+    public ResponseDto createAccount(CreateAccountsDto createAccountsDto) {
+        //-- 1. Map the CreateAccountsDto to Accounts
+        Accounts accounts = modelMapper.map(createAccountsDto, Accounts.class);
+        //-- If one of the customer unique attributes exists, it becomes an unprocessable entity
+        isExist(accounts.getIdNumber(), accounts.getMobileNumber());
+        //-- 2. Save the newly created account
+        accounts.setAccountNumber(AccountUtils.generateAccNumber());
+        accounts.setActiveSw(Boolean.TRUE);
+        accountsRepository.save(accounts);
+        //-- 3. Return the response
+        return ResponseDto.builder()
+                .statusMsg(AccountsConstants.MESSAGE_200)
+                .statusCode(AccountsConstants.STATUS_200)
+                .build();
+    }
+    /**
+     * Find Account number by accountNumber
+     * @param accountNumber
+     * @return
+     */
+    @Override
+    public AccountsRecord findByAccNumber(Long accountNumber){
+        //-- 1. Find the account by accountNumber
+        Accounts accounts = accountsRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(()-> new ResourceNotFoundException("Customer Account","Account Number",String.valueOf(accountNumber)));
+        //-- 2. Return the Accounts Record
+        return modelMapper.map(accounts, AccountsRecord.class);
+    }
+
+    @Override
+    public List<AccountsRecord> findAccountsByIdNumber(String idNumber){
+        //-- does the customer exist by idNumber
+        if(!accountsRepository.existsByIdNumber(idNumber))
+            throw new ResourceNotFoundException("Customer Account","ID Number",idNumber);
+        //-- 1. Find the account by ID number
+        List<Accounts> accounts = accountsRepository.findAllByIdNumber(idNumber);
+        //-- 2. Return the Accounts Record
+        return accounts.stream()
+                .filter(Accounts::isActiveSw)
+                .map(account -> modelMapper.map(account, AccountsRecord.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ResponseDto updateAccountByAccNumber(Long accountNumber, UpdateAccountDto updateAccountDto) {
+        //-- 1. Find the account by accountNumber
+        Accounts accounts = accountsRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(()-> new ResourceNotFoundException("Customer Account","Account Number",String.valueOf(accountNumber)));
+        //-- 2. Find the account by accountNumber
+        String mobileNumber = updateAccountDto.mobileNumber();
+        String idNumber  = updateAccountDto.idNumber();
+        String branchAddress  = updateAccountDto.branchAddress();
+        //-- update the new attributes
+        accounts.setMobileNumber(mobileNumber);
+        accounts.setIdNumber(idNumber);
+        accounts.setBranchAddress(branchAddress);
+        //-- update the accounts object
+        Accounts updatedAccount = accountsRepository.save(accounts);
+        //-- 3. return a proper message
+        return new ResponseDto(AccountsConstants.MESSAGE_200,AccountsConstants.MESSAGE_200);
+    }
+
+    @Override
+    public ResponseDto deleteAccountByAccNumber(Long accountNumber) {
+        //-- 1. Find the account by accountNumber
+        Accounts accounts = accountsRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(()-> new ResourceNotFoundException("Customer Account","Account Number",String.valueOf(accountNumber)));
+        //-- update the new attributes
+        accounts.setActiveSw(false);
+        //-- update the accounts object
+        Accounts updatedAccount = accountsRepository.save(accounts);
+        //-- 3. return a proper message
+        return new ResponseDto(AccountsConstants.MESSAGE_204,AccountsConstants.MESSAGE_204);
+    }
+
+    /**
+     * Check whether the Account with unique fields - ID Number, Mobile Number - already exists
+     * @param idNumber
+     * @param mobileNumber
+     * @return
+     */
+    private void isExist(String idNumber, String mobileNumber) {
+        boolean isExistByIdNumber = accountsRepository.existsByIdNumber(idNumber);
+        boolean isExistByMobileNumber = accountsRepository.existsByMobileNumber(mobileNumber);
+        //-- ID number exists
+        if(isExistByIdNumber)
+            throw new ResourceAlreadyExistsException("Account","ID Number",idNumber);
+        //-- check if mobile Number exists
+        if(isExistByMobileNumber)
+            throw new ResourceAlreadyExistsException("Account","Mobile Number",mobileNumber);
+    }
+}

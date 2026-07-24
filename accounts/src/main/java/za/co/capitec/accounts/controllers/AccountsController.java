@@ -1,46 +1,43 @@
 package za.co.capitec.accounts.controllers;
 
 
+import jakarta.validation.constraints.Pattern;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import za.co.capitec.accounts.dtos.records.AccountsRecord;
 import za.co.capitec.accounts.dtos.requests.CreateAccountsDto;
 import za.co.capitec.accounts.dtos.requests.UpdateAccountDto;
 import za.co.capitec.accounts.dtos.response.AccountsResponse;
+import za.co.capitec.accounts.services.IAccountService;
+
+import java.util.List;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping(path = "/api/v1")
 public class AccountsController {
 
-//    private final IAccountService service;
-//
-//    public AccountsController(IAccountService service) {
-//        this.service = service;
-//    }
-    //-- http://localhost:8080/api/v1?pageNo=1&pageSize=10&sortBy=accountType&sortDir=asc
-    @GetMapping
-    public ResponseEntity<AccountsResponse> handleFindAll(@RequestParam(defaultValue = "0") int pageNo,
-                                                          @RequestParam(defaultValue = "10") int pageSize,
-                                                          @RequestParam(defaultValue = "accountType") String sortBy,
-                                                          @RequestParam(defaultValue = "asc") String sortDir) {
-        log.info("Received find all accounts request");
-        return new ResponseEntity<>(null,HttpStatus.OK);
-    }
+    private final IAccountService service;
 
+    /**
+     *
+     */
     //-- http://localhost:8080/api/v1/{accountNumber}
     @GetMapping(path = "/{accountNumber}")
-    public ResponseEntity<Object> handleFindById(@PathVariable("accountNumber") Long accountNumber) {
+    public ResponseEntity<AccountsRecord> handleFindById(@PathVariable("accountNumber") Long accountNumber) {
         log.info("Received find account by id request for accountNumber: {}", accountNumber);
-        return new ResponseEntity<>(null,HttpStatus.OK);
+        return new ResponseEntity<>(service.findByAccNumber(accountNumber), HttpStatus.OK);
     }
 
     //-- http://localhost:8080/api/v1/search?idNumber=123456
-    @GetMapping(path = "/search")
-    public ResponseEntity<Object> handleFindByIDNumber(@RequestParam("idNumber") String idNumber) {
-        log.info("Received find account by ID Number: {}", idNumber);
-        return new ResponseEntity<>(null,HttpStatus.OK);
+    @GetMapping(path = "/accounts")
+    public ResponseEntity<List<AccountsRecord>> handleFindByIDNumber(@RequestParam("idNumber") @Pattern(regexp = "\\d{13}") String idNumber) {
+        log.info("Received find accounts by ID Number: {}", idNumber);
+        return new ResponseEntity<>(service.findAccountsByIdNumber(idNumber), HttpStatus.OK);
     }
 
     //-- http://localhost:8080/api/v1/

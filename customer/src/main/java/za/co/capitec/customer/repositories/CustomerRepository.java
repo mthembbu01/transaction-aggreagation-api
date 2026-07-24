@@ -15,9 +15,17 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customers, Long> {
 
+    Optional<Customers> findByIdNumber(String idNumber);
+
     Optional<Customers> findByEmail(String email);
 
     Optional<Customers> findByMobileNumber(String mobileNumber);
+
+    boolean existsByIdNumber(String idNumber);
+
+    boolean existsByMobileNumber(String mobileNumber);
+
+    boolean existsByEmail(String email);
 
     List<Customers> findAllByIdNumber(String idNumber);
 

@@ -22,4 +22,8 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
     Page<Loans> findAllByIdNumber(String idNumber, Pageable pageable);
 
     Optional<Loans> findByMobileNumber(String mobileNumber);
+
+    boolean existsByIdNumber(String idNumber);
+
+    boolean existsByMobileNumber(String mobileNumber);
 }

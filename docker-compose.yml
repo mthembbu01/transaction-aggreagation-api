@@ -1,0 +1,220 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_PASSWORD: rootpass
+      POSTGRES_INITDB_ARGS: "-c shared_preload_libraries=pg_stat_statements"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - capitec-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Eureka Service Discovery
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    environment:
+      SPRING_APPLICATION_NAME: eureka-server
+      SERVER_PORT: 8070
+      EUREKA_INSTANCE_HOSTNAME: eureka-server
+    ports:
+      - "8070:8070"
+    networks:
+      - capitec-network
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8070/eureka/apps"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Accounts Microservice
+  accounts:
+    build:
+      context: ./accounts
+      dockerfile: Dockerfile
+    container_name: accounts-service
+    environment:
+      SPRING_APPLICATION_NAME: accounts
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_cptc_accounts?schema=public
+      SPRING_DATASOURCE_USERNAME: dev_cptc_user
+      SPRING_DATASOURCE_PASSWORD: localpass
+      SPRING_FLYWAY_USER: dev_cptc_user
+      SPRING_FLYWAY_PASSWORD: localpass
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/db_cptc_accounts?schema=public
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
+      EUREKA_INSTANCE_HOSTNAME: accounts
+      SERVER_PORT: 8080
+    ports:
+      - "8081:8080"
+    networks:
+      - capitec-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Customer Microservice
+  customer:
+    build:
+      context: ./customer
+      dockerfile: Dockerfile
+    container_name: customer-service
+    environment:
+      SPRING_APPLICATION_NAME: customer
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_cptc_customers?schema=public
+      SPRING_DATASOURCE_USERNAME: dev_cptc_user
+      SPRING_DATASOURCE_PASSWORD: localpass
+      SPRING_FLYWAY_USER: dev_cptc_user
+      SPRING_FLYWAY_PASSWORD: localpass
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/db_cptc_customers?schema=public
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
+      EUREKA_INSTANCE_HOSTNAME: customer
+      SERVER_PORT: 8080
+    ports:
+      - "8082:8080"
+    networks:
+      - capitec-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Credit Cards Microservice
+  creditcards:
+    build:
+      context: ./creditcards
+      dockerfile: Dockerfile
+    container_name: creditcards-service
+    environment:
+      SPRING_APPLICATION_NAME: creditcards
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_cptc_creditcards?schema=public
+      SPRING_DATASOURCE_USERNAME: dev_cptc_user
+      SPRING_DATASOURCE_PASSWORD: localpass
+      SPRING_FLYWAY_USER: dev_cptc_user
+      SPRING_FLYWAY_PASSWORD: localpass
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/db_cptc_creditcards?schema=public
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
+      EUREKA_INSTANCE_HOSTNAME: creditcards
+      SERVER_PORT: 8080
+    ports:
+      - "8083:8080"
+    networks:
+      - capitec-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Loans Microservice
+  loans:
+    build:
+      context: ./loans
+      dockerfile: Dockerfile
+    container_name: loans-service
+    environment:
+      SPRING_APPLICATION_NAME: loans
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_cptc_loans?schema=public
+      SPRING_DATASOURCE_USERNAME: dev_cptc_user
+      SPRING_DATASOURCE_PASSWORD: localpass
+      SPRING_FLYWAY_USER: dev_cptc_user
+      SPRING_FLYWAY_PASSWORD: localpass
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/db_cptc_loans?schema=public
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
+      EUREKA_INSTANCE_HOSTNAME: loans
+      SERVER_PORT: 8080
+    ports:
+      - "8084:8080"
+    networks:
+      - capitec-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    environment:
+      SPRING_APPLICATION_NAME: api-gateway
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
+      EUREKA_INSTANCE_HOSTNAME: api-gateway
+      SERVER_PORT: 8071
+      APP_BASE_URL: http://localhost:8071
+    ports:
+      - "8071:8071"
+    networks:
+      - capitec-network
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      accounts:
+        condition: service_healthy
+      customer:
+        condition: service_healthy
+      creditcards:
+        condition: service_healthy
+      loans:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8071/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+networks:
+  capitec-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+
