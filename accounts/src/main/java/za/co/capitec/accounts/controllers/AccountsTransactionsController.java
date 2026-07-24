@@ -33,13 +33,6 @@ public class AccountsTransactionsController {
         log.info("Transfer request received: {}", transferDto);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
-    //-- save a single account CREDIT/DEBIT transaction api
-    //-- http://localhost:8090/api/v1/transaction
-    @PostMapping
-    public ResponseEntity<String> handleTransactions(@RequestBody TransactionDto transactionDto) {
-        log.info("Transaction request received: {}", transactionDto);
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
     //-- Typical Bank Statement
     //-- get all transactions using the account number between startDate and endDate api
     //-- http://localhost:8091/api/v1/{accountNumber}/{startDate}/{endDate}?pageNo=0&pageSize=10&sortBy=date&sortDir=asc
@@ -79,13 +72,13 @@ public class AccountsTransactionsController {
      * @return
      */
     @GetMapping("/{idNumber}")
-    public ResponseEntity<List<AccountTransaction>> handleFindAll(@PathVariable("idNumber") Long idNumber,
-                                                                 @RequestParam("startDate") LocalDate startDate,
-                                                                 @RequestParam("endDate") LocalDate endDate,
-                                                                 @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                                                 @RequestParam(value = "sortBy", defaultValue = "date", required = false) String sortBy,
-                                                                 @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
+    public ResponseEntity<TransactionResponse> handleFindAll(@PathVariable("idNumber") Long idNumber,
+                                                             @RequestParam("startDate") LocalDate startDate,
+                                                             @RequestParam("endDate") LocalDate endDate,
+                                                             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                             @RequestParam(value = "sortBy", defaultValue = "date", required = false) String sortBy,
+                                                             @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
         //TODO: For each account from the idNumber, fetch transactions, build a TransactionResponse, then convert it into a list
         log.info("Find all accounts transactions for idNumber: {}, from:{} to: {}", idNumber,startDate,endDate);
         return new ResponseEntity<>(null, HttpStatus.OK);

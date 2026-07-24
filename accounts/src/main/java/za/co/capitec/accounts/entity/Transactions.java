@@ -40,8 +40,7 @@ public class Transactions {
 
     /**
      * The constructor to create a transaction
-     * @param account
-     * @param accountType
+     * @param accounts
      * @param description
      * @param isImmediate
      * @param amount

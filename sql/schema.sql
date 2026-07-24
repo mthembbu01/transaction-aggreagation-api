@@ -18,6 +18,9 @@ GRANT CONNECT ON DATABASE db_cptc_customers, db_cptc_accounts, db_cptc_creditcar
 -- Re-run this section while connected to each target database if needed.
 GRANT USAGE ON SCHEMA public TO dev_cptc_user;
 
+-- Required for Flyway to create flyway_schema_history and project tables.
+GRANT CREATE ON SCHEMA public TO dev_cptc_user;
+
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO dev_cptc_user;
 
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO dev_cptc_user;
