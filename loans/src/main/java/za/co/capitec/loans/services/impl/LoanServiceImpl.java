@@ -1,14 +1,13 @@
 package za.co.capitec.loans.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import za.co.capitec.loans.constants.LoansConstants;
 import za.co.capitec.loans.dtos.records.LoanRecord;
 import za.co.capitec.loans.dtos.requests.CreateLoanDto;
 import za.co.capitec.loans.dtos.requests.UpdateLoanDto;
-import za.co.capitec.loans.dtos.response.LoansResponse;
 import za.co.capitec.loans.dtos.response.ResponseDto;
 import za.co.capitec.loans.entity.Loans;
 import za.co.capitec.loans.enums.LoanStatus;
@@ -18,132 +17,135 @@ import za.co.capitec.loans.repositories.LoanRepository;
 import za.co.capitec.loans.services.ILoanService;
 import za.co.capitec.loans.utilities.LoanUtils;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class LoanServiceImpl implements ILoanService {
 
     private final LoanRepository loanRepository;
 
-    @Override
-    public LoansResponse findAll(Pageable pageable) {
-        Page<Loans> page = loanRepository.findAll(pageable);
-        return LoansResponse.builder()
-                .content(page.getContent().stream().map(this::toRecord).toList())
-                .pageNo(page.getNumber())
-                .pageSize(page.getSize())
-                .totalPages(page.getTotalPages())
-                .totalElements(page.getTotalElements())
-                .isLast(page.isLast())
-                .build();
-    }
-
-    @Override
-    public LoanRecord findByLoanNumber(Long loanNumber) {
-        Loans loan = loanRepository.findByLoanNumber(loanNumber)
-                .orElseThrow(() -> new ResourceNotFoundException("Loan", "loanNumber", String.valueOf(loanNumber)));
-        return toRecord(loan);
-    }
-
-    @Override
-    public List<LoanRecord> findLoansByIdNumber(String idNumber) {
-        if (!loanRepository.existsByIdNumber(idNumber)) {
-            throw new ResourceNotFoundException("Loan", "idNumber", idNumber);
-        }
-
-        return loanRepository.findAllByIdNumber(idNumber).stream()
-                .filter(Loans::isActiveSw)
-                .map(this::toRecord)
-                .toList();
-    }
-
+    private final ModelMapper modelMapper;
     @Override
     public ResponseDto createLoan(CreateLoanDto createLoanDto) {
-        validateUniqueFields(createLoanDto.idNumber(), createLoanDto.mobileNumber());
-
-        Loans loan = Loans.builder()
-                .loanNumber(Long.parseLong(LoanUtils.generateLoanNumber()))
-                .loanType(createLoanDto.loanType())
-                .mobileNumber(createLoanDto.mobileNumber())
-                .idNumber(createLoanDto.idNumber())
-                .loanAmount(createLoanDto.loanAmount())
-                .outstandingBalance(createLoanDto.loanAmount())
-                .monthlyInstalment(createLoanDto.monthlyInstalment())
-                .startDate(createLoanDto.startDate())
-                .endDate(createLoanDto.endDate())
-                .status(LoanStatus.ACTIVE)
-                .activeSw(true)
-                .build();
-
+        //-- 1. Map the CreateLoanDto to Loans
+        Loans loan = modelMapper.map(createLoanDto, Loans.class);
+        //-- If one of the customer unique attributes exists, it becomes an unprocessable entity
+        isExist(createLoanDto.idNumber(), createLoanDto.mobileNumber());
+        //-- 2. Save the newly created loan
+        loan.setLoanNumber(Long.parseLong(LoanUtils.generateLoanNumber()));
+        loan.setOutstandingBalance(createLoanDto.loanAmount());
+        loan.setStatus(LoanStatus.ACTIVE);
+        loan.setActiveSw(true);
         loanRepository.save(loan);
-
-        return ResponseDto.builder()
-                .statusCode(LoansConstants.STATUS_201)
-                .statusMsg(LoansConstants.MESSAGE_201)
-                .build();
+        //-- 3. Return the response
+        return new ResponseDto(LoansConstants.STATUS_201, LoansConstants.MESSAGE_201);
+    }
+    /**
+     * Find Loan by loanNumber
+     * @param loanNumber
+     * @return
+     */
+    @Override
+    public LoanRecord findByLoanNumber(Long loanNumber) {
+        //-- 1. Find the loan by loanNumber
+        Loans loan = findLoan(loanNumber);
+        //-- 2. Return the Loan Record
+        return modelMapper.map(loan, LoanRecord.class);
     }
 
+    /**
+     *
+     * @param idNumber
+     * @return
+     */
+    @Override
+    public List<LoanRecord> findLoansByIdNumber(String idNumber) {
+        //-- 1. does the loan exist by idNumber
+        if (!loanRepository.existsByIdNumber(idNumber))
+            throw new ResourceNotFoundException("Loan", "ID Number", idNumber);
+        //-- 1. Find loans by ID number
+        return loanRepository.findAllByIdNumber(idNumber)
+                .stream()
+                .filter(Loans::isActiveSw)
+                .map(loan -> modelMapper.map(loan, LoanRecord.class))
+                .collect(Collectors.toList());
+    }
+    /**
+     *
+     * @param loanNumber
+     * @param updateLoanDto
+     * @return
+     */
     @Override
     public ResponseDto updateLoanByLoanNumber(Long loanNumber, UpdateLoanDto updateLoanDto) {
-        Loans loan = loanRepository.findByLoanNumber(loanNumber)
-                .orElseThrow(() -> new ResourceNotFoundException("Loan", "loanNumber", String.valueOf(loanNumber)));
-
-        loan.setLoanType(updateLoanDto.loanType());
-        loan.setMobileNumber(updateLoanDto.mobileNumber());
-        loan.setIdNumber(updateLoanDto.idNumber());
+        //-- 1. Find the loan by loanNumber
+        Loans loan = findLoan(loanNumber);
+        //-- 2. Extract update values
+        String mobileNumber = updateLoanDto.mobileNumber();
+        String idNumber = updateLoanDto.idNumber();
+        //-- If one of the customer unique attributes exists, it becomes an unprocessable entity
+        isExist(idNumber, mobileNumber);
+        //-- 4. Update attributes
+        loan.setMobileNumber(mobileNumber);
+        loan.setIdNumber(idNumber);
         loan.setLoanAmount(updateLoanDto.loanAmount());
         loan.setMonthlyInstalment(updateLoanDto.monthlyInstalment());
-        loan.setStartDate(updateLoanDto.startDate());
         loan.setEndDate(updateLoanDto.endDate());
         loan.setStatus(updateLoanDto.status());
         loan.setActiveSw(updateLoanDto.activeSw());
-
+        //-- update the loan object
         loanRepository.save(loan);
-
-        return ResponseDto.builder()
-                .statusCode(LoansConstants.STATUS_200)
-                .statusMsg(LoansConstants.MESSAGE_200)
-                .build();
+        //-- 5. return a proper message
+        return new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200);
     }
-
+    /**
+     *
+     * @param loanNumber
+     * @return
+     */
     @Override
     public ResponseDto deleteLoanByLoanNumber(Long loanNumber) {
-        Loans loan = loanRepository.findByLoanNumber(loanNumber)
-                .orElseThrow(() -> new ResourceNotFoundException("Loan", "loanNumber", String.valueOf(loanNumber)));
-
+        //-- 1. Find the loan by loanNumber
+        Loans loan = findLoan(loanNumber);
+        //-- 2. Soft delete
+        loan.setOutstandingBalance(0.0);
         loan.setActiveSw(false);
+        loan.setStatus(LoanStatus.CLOSED);
+        //-- update the loan object
         loanRepository.save(loan);
-
-        return ResponseDto.builder()
-                .statusCode(LoansConstants.STATUS_204)
-                .statusMsg(LoansConstants.MESSAGE_204)
-                .build();
+        //-- 3. return a proper message
+        return new ResponseDto(LoansConstants.STATUS_204, LoansConstants.MESSAGE_204);
     }
-
-    private void validateUniqueFields(String idNumber, String mobileNumber) {
-        if (loanRepository.existsByIdNumber(idNumber)) {
-            throw new ResourceAlreadyExistsException("Loan", "idNumber", idNumber);
+    /**
+     * Check whether the Loan with unique fields - ID Number, Mobile Number - already exists
+     * @param idNumber
+     * @param mobileNumber
+     * @return
+     */
+    private void isExist(String idNumber, String mobileNumber) {
+        boolean isExistByIdNumber = loanRepository.existsByIdNumber(idNumber);
+        boolean isExistByMobileNumber = loanRepository.existsByMobileNumber(mobileNumber);
+        //-- ID number exists
+        if (isExistByIdNumber) {
+            throw new ResourceAlreadyExistsException("Loan", "ID Number", idNumber);
         }
-        if (loanRepository.existsByMobileNumber(mobileNumber)) {
-            throw new ResourceAlreadyExistsException("Loan", "mobileNumber", mobileNumber);
+        //-- check if mobile Number exists
+        if (isExistByMobileNumber) {
+            throw new ResourceAlreadyExistsException("Loan", "Mobile Number", mobileNumber);
         }
     }
-
-    private LoanRecord toRecord(Loans loan) {
-        return new LoanRecord(
-                loan.getLoanNumber(),
-                loan.getLoanType(),
-                loan.getMobileNumber(),
-                loan.getIdNumber(),
-                loan.getLoanAmount(),
-                loan.getOutstandingBalance(),
-                loan.getMonthlyInstalment(),
-                loan.getStartDate(),
-                loan.getEndDate(),
-                loan.getStatus(),
-                loan.isActiveSw()
-        );
+    /**
+     * Finds Loans by Loan Number
+     * @param loanNumber
+     * @return
+     */
+    private Loans findLoan(Long loanNumber) {
+        return loanRepository.findByLoanNumber(loanNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Loan", "Loan Number", String.valueOf(loanNumber)));
     }
 }
 

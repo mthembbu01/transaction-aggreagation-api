@@ -1,16 +1,13 @@
 package za.co.capitec.customer.services;
 
-import org.springframework.data.domain.Pageable;
 import za.co.capitec.customer.entity.dtos.records.CustomersRecord;
 import za.co.capitec.customer.entity.dtos.requests.CreateCustomerRequest;
 import za.co.capitec.customer.entity.dtos.requests.UpdateCustomerRequest;
-import za.co.capitec.customer.entity.dtos.response.CustomerResponse;
 import za.co.capitec.customer.entity.dtos.response.ResponseDto;
 
 import java.util.List;
 
 public interface ICustomerService {
-    CustomerResponse findAll(Pageable pageable);
     CustomersRecord findByIdNumber(String idNumber);
     List<CustomersRecord> findCustomersByIdNumber(String idNumber);
     ResponseDto createCustomer(CreateCustomerRequest createCustomerRequest);

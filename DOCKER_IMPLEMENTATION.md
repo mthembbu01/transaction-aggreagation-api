@@ -24,7 +24,7 @@ This document summarizes all Docker and containerization enhancements made to th
   - Volume persistence for PostgreSQL data
   - Environment variable configuration
 
-#### `init-db.sql` (Project Root)
+#### `sql/init-db.sql` (Project Root)
 - **Purpose**: PostgreSQL initialization script
 - **Creates**:
   - 4 databases: `db_cptc_accounts`, `db_cptc_customers`, `db_cptc_creditcards`, `db_cptc_loans`
@@ -151,7 +151,7 @@ This document summarizes all Docker and containerization enhancements made to th
 ### Database Service (postgres)
 - **Image**: postgres:16-alpine (lightweight)
 - **Port**: 5432 (external and internal)
-- **Init Script**: Runs `init-db.sql` automatically
+- **Init Script**: Runs `sql/init-db.sql` automatically
 - **Volumes**: `postgres_data` for persistence
 - **Health Check**: `pg_isready` checks
 - **Network**: `capitec-network`

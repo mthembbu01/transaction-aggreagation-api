@@ -265,7 +265,7 @@ SERVER_PORT: 8080 (exposed on different ports via docker-compose)
 
 ### PostgreSQL Setup
 
-The `init-db.sql` script automatically creates:
+The `sql/init-db.sql` script automatically creates:
 - 4 databases: `db_cptc_accounts`, `db_cptc_customers`, `db_cptc_creditcards`, `db_cptc_loans`
 - 1 user: `dev_cptc_user` with password `localpass`
 - Proper schema and table privileges

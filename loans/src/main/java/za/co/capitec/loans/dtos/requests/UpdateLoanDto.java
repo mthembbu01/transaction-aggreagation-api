@@ -5,13 +5,10 @@ import za.co.capitec.loans.enums.LoanType;
 
 import java.time.LocalDate;
 
-public record UpdateLoanDto(Long loanNumber,
-                             LoanType loanType,
-                             String mobileNumber,
+public record UpdateLoanDto(String mobileNumber,
                              String idNumber,
                              Double loanAmount,
                              Double monthlyInstalment,
-                             LocalDate startDate,
                              LocalDate endDate,
                              LoanStatus status,
                              boolean activeSw) {

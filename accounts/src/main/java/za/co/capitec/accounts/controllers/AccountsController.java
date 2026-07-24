@@ -11,6 +11,7 @@ import za.co.capitec.accounts.dtos.records.AccountsRecord;
 import za.co.capitec.accounts.dtos.requests.CreateAccountsDto;
 import za.co.capitec.accounts.dtos.requests.UpdateAccountDto;
 import za.co.capitec.accounts.dtos.response.AccountsResponse;
+import za.co.capitec.accounts.dtos.response.ResponseDto;
 import za.co.capitec.accounts.services.IAccountService;
 
 import java.util.List;
@@ -24,7 +25,9 @@ public class AccountsController {
     private final IAccountService service;
 
     /**
-     *
+     * Find Account number by accountNumber
+     * @param accountNumber
+     * @return
      */
     //-- http://localhost:8080/api/v1/{accountNumber}
     @GetMapping(path = "/{accountNumber}")
@@ -32,36 +35,45 @@ public class AccountsController {
         log.info("Received find account by id request for accountNumber: {}", accountNumber);
         return new ResponseEntity<>(service.findByAccNumber(accountNumber), HttpStatus.OK);
     }
-
-    //-- http://localhost:8080/api/v1/search?idNumber=123456
+    /**
+     *
+     * @param idNumber
+     * @return
+     */
+    //-- http://localhost:8080/api/v1/accounts?idNumber=123456
     @GetMapping(path = "/accounts")
     public ResponseEntity<List<AccountsRecord>> handleFindByIDNumber(@RequestParam("idNumber") @Pattern(regexp = "\\d{13}") String idNumber) {
         log.info("Received find accounts by ID Number: {}", idNumber);
         return new ResponseEntity<>(service.findAccountsByIdNumber(idNumber), HttpStatus.OK);
     }
-
+    /**
+     *
+     * @param createAccountsDto
+     * @return
+     */
     //-- http://localhost:8080/api/v1/
     @PostMapping
-    public ResponseEntity<Object> handleCreate(@RequestBody CreateAccountsDto createAccountsDto) {
+    public ResponseEntity<ResponseDto> handleCreate(@RequestBody CreateAccountsDto createAccountsDto) {
         log.info("Received create new account request {}", createAccountsDto);
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+        return new ResponseEntity<>(service.createAccount(createAccountsDto), HttpStatus.CREATED);
     }
-    //-- http://localhost:8080/api/v1/1
+    //-- http://localhost:8080/api/v1/{1}
     @PutMapping(path = "/{accountNumber}")
-    public ResponseEntity<Object> handleUpdate(@PathVariable("accountNumber") Long accountNumber, @RequestBody UpdateAccountDto updateAccountDto) {
+    public ResponseEntity<ResponseDto> handleUpdate(@PathVariable("accountNumber") Long accountNumber, @RequestBody UpdateAccountDto updateAccountDto) {
         log.info("Received the update request of accountNumber: {}",accountNumber);
-        return new ResponseEntity<>(null,HttpStatus.OK);
+        return new ResponseEntity<>(service.updateAccountByAccNumber(accountNumber, updateAccountDto), HttpStatus.OK);
     }
 
-    //-- http://localhost:8080/api/v1/1
+    //-- http://localhost:8080/api/v1/{1}
     @PatchMapping(path = "/{accountNumber}")
-    public ResponseEntity<Object> handlePatch(@PathVariable("accountNumber") Long accountNumber, @RequestBody UpdateAccountDto updateAccountDto) {
+    public ResponseEntity<ResponseDto> handlePatch(@PathVariable("accountNumber") Long accountNumber, @RequestBody UpdateAccountDto updateAccountDto) {
         log.info("Received the patch request of accountNumber: {}",accountNumber);
-        return new ResponseEntity<>(null,HttpStatus.OK);
+        return new ResponseEntity<>(service.updateAccountByAccNumber(accountNumber, updateAccountDto),HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{accountNumber}")
-    public void handleDelete(@PathVariable("accountNumber") Long accountNumber) {
+    public ResponseEntity<ResponseDto> handleDelete(@PathVariable("accountNumber") Long accountNumber) {
         log.info("Received the delete request of accountNumber: {}", accountNumber);
+        return new ResponseEntity<>(service.deleteAccountByAccNumber(accountNumber), HttpStatus.NO_CONTENT);
     }
 }

@@ -4,10 +4,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CreditCardUtils {
 
-    public static String generateCardNumber() {
-        long number = ThreadLocalRandom.current()
+    public static Long generateAccNumber() {
+        //--
+        return ThreadLocalRandom.current()
+                .nextLong(1_000_000_000L, 10_000_000_000L);
+    }
+
+    public static Long generateCardNumber() {
+        return ThreadLocalRandom.current()
                 .nextLong(1_000_000_000_000_0000L, 9_999_999_999_999_9999L);
-        return String.valueOf(number);
     }
 }
 

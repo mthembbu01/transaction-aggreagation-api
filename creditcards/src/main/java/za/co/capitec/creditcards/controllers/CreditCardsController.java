@@ -1,17 +1,14 @@
 package za.co.capitec.creditcards.controllers;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.co.capitec.creditcards.dtos.records.CreditCardRecord;
 import za.co.capitec.creditcards.dtos.requests.CreateCreditCardDto;
 import za.co.capitec.creditcards.dtos.requests.UpdateCreditCardDto;
-import za.co.capitec.creditcards.dtos.response.CreditCardsResponse;
 import za.co.capitec.creditcards.dtos.response.ResponseDto;
 import za.co.capitec.creditcards.services.ICreditCardService;
 
@@ -25,18 +22,6 @@ public class CreditCardsController {
 
     private final ICreditCardService service;
 
-    //-- http://localhost:8080/api/v1?pageNo=0&pageSize=10&sortBy=cardType&sortDir=asc
-    @GetMapping
-    public ResponseEntity<CreditCardsResponse> handleFindAll(@RequestParam(defaultValue = "0") int pageNo,
-                                                              @RequestParam(defaultValue = "10") int pageSize,
-                                                              @RequestParam(defaultValue = "cardType") String sortBy,
-                                                              @RequestParam(defaultValue = "asc") String sortDir) {
-        log.info("Received find all credit cards request");
-        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        return new ResponseEntity<>(service.findAll(pageable), HttpStatus.OK);
-    }
-
     //-- http://localhost:8080/api/v1/{cardNumber}
     @GetMapping(path = "/{cardNumber}")
     public ResponseEntity<CreditCardRecord> handleFindById(@PathVariable("cardNumber") Long cardNumber) {
@@ -44,9 +29,9 @@ public class CreditCardsController {
         return new ResponseEntity<>(service.findByCardNumber(cardNumber), HttpStatus.OK);
     }
 
-    //-- http://localhost:8080/api/v1/search?idNumber=123456
-    @GetMapping(path = "/search")
-    public ResponseEntity<List<CreditCardRecord>> handleFindByIDNumber(@RequestParam("idNumber") String idNumber) {
+    //-- http://localhost:8080/api/v1/creditcards?idNumber=1234567890123
+    @GetMapping(path = "/creditcards")
+    public ResponseEntity<List<CreditCardRecord>> handleFindByIDNumber(@RequestParam("idNumber") @Pattern(regexp = "\\d{13}") String idNumber) {
         log.info("Received find credit card by ID Number: {}", idNumber);
         return new ResponseEntity<>(service.findCreditCardsByIdNumber(idNumber), HttpStatus.OK);
     }

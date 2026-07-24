@@ -49,10 +49,7 @@ public class AccountsServiceImpl implements IAccountService {
         accounts.setActiveSw(Boolean.TRUE);
         accountsRepository.save(accounts);
         //-- 3. Return the response
-        return ResponseDto.builder()
-                .statusMsg(AccountsConstants.MESSAGE_200)
-                .statusCode(AccountsConstants.STATUS_200)
-                .build();
+        return new ResponseDto(AccountsConstants.MESSAGE_201, AccountsConstants.STATUS_201);
     }
     /**
      * Find Account number by accountNumber
@@ -62,35 +59,43 @@ public class AccountsServiceImpl implements IAccountService {
     @Override
     public AccountsRecord findByAccNumber(Long accountNumber){
         //-- 1. Find the account by accountNumber
-        Accounts accounts = accountsRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(()-> new ResourceNotFoundException("Customer Account","Account Number",String.valueOf(accountNumber)));
+        Accounts accounts = findAccounts(accountNumber);
         //-- 2. Return the Accounts Record
         return modelMapper.map(accounts, AccountsRecord.class);
     }
-
+    /**
+     * Find Accounts by ID number
+     * @param idNumber
+     * @return
+     */
     @Override
     public List<AccountsRecord> findAccountsByIdNumber(String idNumber){
-        //-- does the customer exist by idNumber
+        //-- 1. does the account exist by idNumber
         if(!accountsRepository.existsByIdNumber(idNumber))
             throw new ResourceNotFoundException("Customer Account","ID Number",idNumber);
-        //-- 1. Find the account by ID number
-        List<Accounts> accounts = accountsRepository.findAllByIdNumber(idNumber);
         //-- 2. Return the Accounts Record
-        return accounts.stream()
+        return accountsRepository.findAllByIdNumber(idNumber)
+                .stream()
                 .filter(Accounts::isActiveSw)
                 .map(account -> modelMapper.map(account, AccountsRecord.class))
                 .collect(Collectors.toList());
     }
-
+    /**
+     * Update Account by accountNumber
+     * @param accountNumber
+     * @param updateAccountDto
+     * @return
+     */
     @Override
     public ResponseDto updateAccountByAccNumber(Long accountNumber, UpdateAccountDto updateAccountDto) {
         //-- 1. Find the account by accountNumber
-        Accounts accounts = accountsRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(()-> new ResourceNotFoundException("Customer Account","Account Number",String.valueOf(accountNumber)));
+        Accounts accounts = findAccounts(accountNumber);;
         //-- 2. Find the account by accountNumber
         String mobileNumber = updateAccountDto.mobileNumber();
         String idNumber  = updateAccountDto.idNumber();
         String branchAddress  = updateAccountDto.branchAddress();
+        //-- If one of the customer unique attributes exists, it becomes an unprocessable entity
+        isExist(idNumber, mobileNumber);
         //-- update the new attributes
         accounts.setMobileNumber(mobileNumber);
         accounts.setIdNumber(idNumber);
@@ -98,22 +103,25 @@ public class AccountsServiceImpl implements IAccountService {
         //-- update the accounts object
         Accounts updatedAccount = accountsRepository.save(accounts);
         //-- 3. return a proper message
-        return new ResponseDto(AccountsConstants.MESSAGE_200,AccountsConstants.MESSAGE_200);
+        return new ResponseDto(AccountsConstants.MESSAGE_200,AccountsConstants.STATUS_200);
     }
-
+    /**
+     *
+     * @param accountNumber
+     * @return
+     */
     @Override
     public ResponseDto deleteAccountByAccNumber(Long accountNumber) {
         //-- 1. Find the account by accountNumber
-        Accounts accounts = accountsRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(()-> new ResourceNotFoundException("Customer Account","Account Number",String.valueOf(accountNumber)));
+        Accounts accounts = findAccounts(accountNumber);
         //-- update the new attributes
+        accounts.setBalance(0.0);
         accounts.setActiveSw(false);
         //-- update the accounts object
         Accounts updatedAccount = accountsRepository.save(accounts);
         //-- 3. return a proper message
-        return new ResponseDto(AccountsConstants.MESSAGE_204,AccountsConstants.MESSAGE_204);
+        return new ResponseDto(AccountsConstants.MESSAGE_204,AccountsConstants.STATUS_204);
     }
-
     /**
      * Check whether the Account with unique fields - ID Number, Mobile Number - already exists
      * @param idNumber
@@ -129,5 +137,15 @@ public class AccountsServiceImpl implements IAccountService {
         //-- check if mobile Number exists
         if(isExistByMobileNumber)
             throw new ResourceAlreadyExistsException("Account","Mobile Number",mobileNumber);
+    }
+
+    /**
+     * Finds Accounts by Account Number
+     * @param accountNumber
+     * @return
+     */
+    private Accounts findAccounts(Long accountNumber){
+       return  accountsRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(()-> new ResourceNotFoundException("Customer Account","Account Number",String.valueOf(accountNumber)));
     }
 }

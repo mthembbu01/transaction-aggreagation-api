@@ -23,6 +23,7 @@ public class Accounts extends BaseEntity {
     private Long accountNumber;
     @Enumerated(EnumType.STRING)
     private AccountType accountType; // SAVINGS, CHEQUE, Transactional
+    private Double balance;
     private String mobileNumber;
     private String idNumber;
     private String branchAddress;

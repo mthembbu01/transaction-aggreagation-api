@@ -32,6 +32,7 @@ public class Loans extends BaseEntity {
     private String mobileNumber;
     private String idNumber;
     private Double loanAmount;
+    private Double outstandingAmount;
     private Double outstandingBalance;
     private Double monthlyInstalment;
     private LocalDate startDate;
