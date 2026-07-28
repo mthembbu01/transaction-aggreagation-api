@@ -40,11 +40,17 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-autoconfigure</artifactId>
-		</dependency>
-	</dependencies>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-autoconfigure</artifactId>
+	</dependency>
+	<!-- Native macOS DNS resolver for Netty -->
+	<dependency>
+		<groupId>io.netty</groupId>
+		<artifactId>netty-resolver-dns-native-macos</artifactId>
+		<classifier>osx-x86_64</classifier>
+	</dependency>
+</dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

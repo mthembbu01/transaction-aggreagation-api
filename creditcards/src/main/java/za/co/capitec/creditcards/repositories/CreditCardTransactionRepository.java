@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Repository
 public interface CreditCardTransactionRepository extends JpaRepository<CreditCardTransactions, Long> {
 
-    Page<CreditCardTransactions> findByCreditCardCardNumberAndDateBetween(Long cardNumber,
+    Page<CreditCardTransactions> findByCreditCardIdNumberAndDateBetween(String idNumber,
                                                                            Pageable pageable,
                                                                            LocalDate dateFrom,
                                                                            LocalDate dateTo);

@@ -1,7 +1,6 @@
 package za.co.capitec.creditcards.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import za.co.capitec.creditcards.constants.CreditCardsConstants;
@@ -10,7 +9,6 @@ import za.co.capitec.creditcards.dtos.requests.CreateCreditCardDto;
 import za.co.capitec.creditcards.dtos.requests.UpdateCreditCardDto;
 import za.co.capitec.creditcards.dtos.response.ResponseDto;
 import za.co.capitec.creditcards.entity.CreditCards;
-import za.co.capitec.creditcards.enums.CreditCardType;
 import za.co.capitec.creditcards.exceptions.ResourceAlreadyExistsException;
 import za.co.capitec.creditcards.exceptions.ResourceNotFoundException;
 import za.co.capitec.creditcards.repositories.CreditCardRepository;
@@ -18,16 +16,15 @@ import za.co.capitec.creditcards.services.ICreditCardService;
 import za.co.capitec.creditcards.utilities.CreditCardUtils;
 import za.co.capitec.creditcards.utilities.dates.DateUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class CreditCardServiceImpl implements ICreditCardService {
 
-    private final String ACCOUNTS_CACHE_KEY = "accounts";
     private final CreditCardRepository creditCardRepository;
     private final ModelMapper modelMapper;
     /**
@@ -40,7 +37,7 @@ public class CreditCardServiceImpl implements ICreditCardService {
         //-- 1. Map the CreateCreditCardDto to CreditCards
         CreditCards creditCard = modelMapper.map(createCreditCardDto, CreditCards.class);
         //-- If one of the customer unique attributes exists, it becomes an unprocessable entity
-        isExist(createCreditCardDto.idNumber(), createCreditCardDto.mobileNumber());
+        isExist(createCreditCardDto.getIdNumber(), createCreditCardDto.getMobileNumber());
         //-- 2. Save the newly created credit card
         creditCard.setCardNumber(CreditCardUtils.generateCardNumber());
         creditCard.setAccountNumber(CreditCardUtils.generateAccNumber());
@@ -88,11 +85,11 @@ public class CreditCardServiceImpl implements ICreditCardService {
         //-- 1. Find the credit card by cardNumber
         CreditCards creditCard = findCreditCard(cardNumber);
         //-- 2. Extract update values
-        String mobileNumber = updateCreditCardDto.mobileNumber();
-        String idNumber = updateCreditCardDto.idNumber();
-        Double creditLimit = updateCreditCardDto.creditLimit();
-        LocalDate expiryDate = updateCreditCardDto.expiryDate();
-        boolean activeSw = updateCreditCardDto.activeSw();
+        String mobileNumber = updateCreditCardDto.getMobileNumber();
+        String idNumber = updateCreditCardDto.getIdNumber();
+        BigDecimal creditLimit = updateCreditCardDto.getCreditLimit();
+        LocalDate expiryDate = updateCreditCardDto.getExpiryDate();
+        boolean activeSw = updateCreditCardDto.isActiveSw();
         //-- 3. Validate unique fields
         isExist(idNumber, mobileNumber);
         //-- 4. Update attributes
@@ -102,7 +99,7 @@ public class CreditCardServiceImpl implements ICreditCardService {
         creditCard.setExpiryDate(expiryDate);
         creditCard.setActiveSw(activeSw);
         //-- update the CreditCard object
-        CreditCards updatedCreditCard = creditCardRepository.save(creditCard);
+        creditCardRepository.save(creditCard);
         //-- 5. return a proper message
         return new ResponseDto(CreditCardsConstants.STATUS_200, CreditCardsConstants.MESSAGE_200);
     }
@@ -116,7 +113,7 @@ public class CreditCardServiceImpl implements ICreditCardService {
         //-- 1. Find the credit card by cardNumber
         CreditCards creditCard = findCreditCard(cardNumber);
         //-- 2. Soft delete
-        creditCard.setAvailableCredit(0.0);
+        creditCard.setAvailableCredit(BigDecimal.ZERO);
         creditCard.setExpiryDate(DateUtils.getCurrentDate());
         creditCard.setActiveSw(false);
         creditCardRepository.save(creditCard);
@@ -146,9 +143,20 @@ public class CreditCardServiceImpl implements ICreditCardService {
      * @param cardNumber
      * @return
      */
-    private CreditCards findCreditCard(Long cardNumber) {
+    @Override
+    public CreditCards findCreditCard(Long cardNumber) {
         return creditCardRepository.findByCardNumber(cardNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("CreditCard", "Card Number", String.valueOf(cardNumber)));
+    }
+    /**
+     *
+     * @param creditCard
+     * @return
+     */
+    @Override
+    public ResponseDto saveCreditCard(CreditCards creditCard) {
+        creditCardRepository.save(creditCard);
+        return new ResponseDto(CreditCardsConstants.STATUS_200, CreditCardsConstants.MESSAGE_200);
     }
 }
 

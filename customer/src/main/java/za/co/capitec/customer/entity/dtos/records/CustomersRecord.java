@@ -1,10 +1,20 @@
 package za.co.capitec.customer.entity.dtos.records;
 
-public record CustomersRecord (String firstName,
-        String lastName,
-        String mobileNumber,
-        String idNumber,
-        String email,
-        String address,
-        boolean activeSw) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CustomersRecord {
+    private String firstName;
+    private String lastName;
+    private String mobileNumber;
+    private String idNumber;
+    private String email;
+    private String address;
+    private boolean activeSw;
 }

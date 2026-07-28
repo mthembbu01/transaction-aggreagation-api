@@ -1,7 +1,6 @@
 package za.co.capitec.accounts.services.impl;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +10,7 @@ import za.co.capitec.accounts.dtos.requests.TransactionDto;
 import za.co.capitec.accounts.dtos.response.ResponseDto;
 import za.co.capitec.accounts.dtos.response.TransactionResponse;
 import za.co.capitec.accounts.entity.Accounts;
-import za.co.capitec.accounts.entity.Transactions;
+import za.co.capitec.accounts.entity.AccountsTransactions;
 import za.co.capitec.accounts.enums.AccountType;
 import za.co.capitec.accounts.enums.Categories;
 import za.co.capitec.accounts.exceptions.InsufficientFundsException;
@@ -26,10 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Slf4j
 @AllArgsConstructor
 public class AccountTransactionServiceImpl implements ITransactionService {
-    private final String TRANSACTION_CACHE_KEY = "transactions";
     private final TransactionRepository transactionRepository;
     private final IAccountService accountService;
     /**
@@ -62,7 +59,7 @@ public class AccountTransactionServiceImpl implements ITransactionService {
      */
     @Override
     public ResponseDto creditAccount(Accounts account, BigDecimal amount, Categories transactionType, String reference) {
-        List<Transactions> transactions = new ArrayList<>();
+        List<AccountsTransactions> transactions = new ArrayList<>();
         //-- 1. credit the account
         //-- add the original amount
         BigDecimal newAmount = account.getBalance().add(amount);
@@ -73,7 +70,7 @@ public class AccountTransactionServiceImpl implements ITransactionService {
             //-- add the interest to our new balance
             newAmount = newAmount.add(interest);
             //-- Create a transaction for an interest
-            Transactions interestTransaction = Transactions.create(account,"Credit",Boolean.TRUE,interest, Categories.INTEREST, reference);
+            AccountsTransactions interestTransaction = AccountsTransactions.create(account,"Credit",Boolean.TRUE,interest, Categories.INTEREST, reference);
             //-- add to the transactions List
             transactions.add(interestTransaction);
         }
@@ -82,7 +79,7 @@ public class AccountTransactionServiceImpl implements ITransactionService {
         //-- 2. Save the new balance
         ResponseDto responseDto = accountService.saveAccount(account);
         //-- 3. Create a transaction for the credit
-        Transactions transaction = Transactions.create(account, "Credit", Boolean.TRUE, amount, transactionType, reference);
+        AccountsTransactions transaction = AccountsTransactions.create(account, "Credit", Boolean.TRUE, amount, transactionType, reference);
         //-- 4. add to the transactions List
         transactions.add(transaction);
         //-- 5. save the transaction
@@ -110,7 +107,7 @@ public class AccountTransactionServiceImpl implements ITransactionService {
         //-- 3. Save the new balance
         ResponseDto responseDto = accountService.saveAccount(account);
         //-- 4. Create a transaction for the credit
-        Transactions transaction = Transactions.create(account, "Debit", Boolean.FALSE, amount, transactionType, reference);
+        AccountsTransactions transaction = AccountsTransactions.create(account, "Debit", Boolean.FALSE, amount, transactionType, reference);
         //-- 5. save the
         transactionRepository.save(transaction);
         //-- 6. return the response
@@ -135,8 +132,8 @@ public class AccountTransactionServiceImpl implements ITransactionService {
         Sort sort = sortDirection(sortBy, sortDir);
         //-- 1. create a pageable instance. Add sortDirection: Ascending or Descending order
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        //-- 2. Find all Transactions using the Pageable, idNumber, startDate, and endDate above
-        Page<Transactions> page = transactionRepository.findByAccountsIdNumberAndDateBetween(pageable, idNumber, dateFrom, dateTo);
+        //-- 2. Find all AccountsTransactions using the Pageable, idNumber, startDate, and endDate above
+        Page<AccountsTransactions> page = transactionRepository.findByAccountsIdNumberAndDateBetween(pageable, idNumber, dateFrom, dateTo);
         //-- 3. Return the Customer Response for pagination
         return AccountUtils.toTransactionResponse(page);
     }

@@ -1,6 +1,16 @@
 package za.co.capitec.accounts.dtos.requests;
 
-public record UpdateAccountDto(String mobileNumber,
-                               String idNumber,
-                               String branchAddress) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UpdateAccountDto {
+    private String mobileNumber;
+    private String idNumber;
+    private String branchAddress;
 }

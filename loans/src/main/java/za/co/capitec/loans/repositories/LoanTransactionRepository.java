@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Repository
 public interface LoanTransactionRepository extends JpaRepository<LoanTransactions, Long> {
 
-    Page<LoanTransactions> findByLoanLoanNumberAndDateBetween(Long loanNumber,
+    Page<LoanTransactions> findByLoanIdNumberAndDateBetween(String idNumber,
                                                                Pageable pageable,
                                                                LocalDate dateFrom,
                                                                LocalDate dateTo);

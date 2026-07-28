@@ -1,8 +1,6 @@
 package za.co.capitec.accounts.services.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import za.co.capitec.accounts.constants.AccountsConstants;
@@ -22,11 +20,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class AccountsServiceImpl implements IAccountService {
-
-    private final String ACCOUNTS_CACHE_KEY = "accounts";
 
     private final AccountsRepository accountsRepository;
 
@@ -90,11 +85,11 @@ public class AccountsServiceImpl implements IAccountService {
     @Override
     public ResponseDto updateAccountByAccNumber(Long accountNumber, UpdateAccountDto updateAccountDto) {
         //-- 1. Find the account by accountNumber
-        Accounts accounts = findAccounts(accountNumber);;
+        Accounts accounts = findAccounts(accountNumber);
         //-- 2. Find the account by accountNumber
-        String mobileNumber = updateAccountDto.mobileNumber();
-        String idNumber  = updateAccountDto.idNumber();
-        String branchAddress  = updateAccountDto.branchAddress();
+        String mobileNumber = updateAccountDto.getMobileNumber();
+        String idNumber  = updateAccountDto.getIdNumber();
+        String branchAddress  = updateAccountDto.getBranchAddress();
         //-- If one of the customer unique attributes exists, it becomes an unprocessable entity
         isExist(idNumber, mobileNumber);
         //-- update the new attributes
@@ -102,7 +97,7 @@ public class AccountsServiceImpl implements IAccountService {
         accounts.setIdNumber(idNumber);
         accounts.setBranchAddress(branchAddress);
         //-- update the accounts object
-        Accounts updatedAccount = accountsRepository.save(accounts);
+        accountsRepository.save(accounts);
         //-- 3. return a proper message
         return new ResponseDto(AccountsConstants.MESSAGE_200,AccountsConstants.STATUS_200);
     }
@@ -119,7 +114,7 @@ public class AccountsServiceImpl implements IAccountService {
         accounts.setBalance(BigDecimal.ZERO);
         accounts.setActiveSw(false);
         //-- update the accounts object
-        Accounts updatedAccount = accountsRepository.save(accounts);
+        accountsRepository.save(accounts);
         //-- 3. return a proper message
         return new ResponseDto(AccountsConstants.MESSAGE_204,AccountsConstants.STATUS_204);
     }
@@ -146,7 +141,7 @@ public class AccountsServiceImpl implements IAccountService {
      */
     @Override
     public ResponseDto saveAccount(Accounts account) {
-        Accounts savedAccount = accountsRepository.save(account);
+        accountsRepository.save(account);
         return new ResponseDto(AccountsConstants.MESSAGE_200, AccountsConstants.STATUS_200);
     }
     /**

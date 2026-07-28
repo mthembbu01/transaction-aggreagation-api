@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-public class TransactionResponse {
-    private List<TransactionRecord> content;
+public class AccTransactionResponse {
+    private List<AccTransactionRecord> content;
     private int pageNo;
     private int pageSize;
     private int totalPages;

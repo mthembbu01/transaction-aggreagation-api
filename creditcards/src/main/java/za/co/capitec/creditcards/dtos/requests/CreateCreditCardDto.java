@@ -1,20 +1,30 @@
 package za.co.capitec.creditcards.dtos.requests;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import za.co.capitec.creditcards.enums.CreditCardType;
 
 import java.time.LocalDate;
 
-public record CreateCreditCardDto(CreditCardType cardType,
-                                  @Pattern(regexp = "^(\\+27|0)?[1-9]\\d{8}$", message = "Invalid mobile number")
-                                  String mobileNumber,
-                                  @Pattern(regexp = "^\\d{13}$", message = "Invalid ID Number")
-                                  String idNumber,
-                                  Double creditLimit,
-                                  LocalDate issueDate,
-                                  LocalDate expiryDate,
-                                  boolean activeSw) {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CreateCreditCardDto {
+    private CreditCardType cardType;
+
+    @Pattern(regexp = "^(\\+27|0)?[1-9]\\d{8}$", message = "Invalid mobile number")
+    private String mobileNumber;
+
+    @Pattern(regexp = "^\\d{13}$", message = "Invalid ID Number")
+    private String idNumber;
+
+    private Double creditLimit;
+    private LocalDate issueDate;
+    private LocalDate expiryDate;
+    private boolean activeSw;
 }
 

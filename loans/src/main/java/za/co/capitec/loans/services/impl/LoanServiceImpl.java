@@ -1,7 +1,6 @@
 package za.co.capitec.loans.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import za.co.capitec.loans.constants.LoansConstants;
@@ -17,12 +16,11 @@ import za.co.capitec.loans.repositories.LoanRepository;
 import za.co.capitec.loans.services.ILoanService;
 import za.co.capitec.loans.utilities.LoanUtils;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class LoanServiceImpl implements ILoanService {
 
@@ -34,10 +32,10 @@ public class LoanServiceImpl implements ILoanService {
         //-- 1. Map the CreateLoanDto to Loans
         Loans loan = modelMapper.map(createLoanDto, Loans.class);
         //-- If one of the customer unique attributes exists, it becomes an unprocessable entity
-        isExist(createLoanDto.idNumber(), createLoanDto.mobileNumber());
+        isExist(createLoanDto.getIdNumber(), createLoanDto.getMobileNumber());
         //-- 2. Save the newly created loan
         loan.setLoanNumber(Long.parseLong(LoanUtils.generateLoanNumber()));
-        loan.setOutstandingBalance(createLoanDto.loanAmount());
+        loan.setOutstandingBalance(createLoanDto.getLoanAmount());
         loan.setStatus(LoanStatus.ACTIVE);
         loan.setActiveSw(true);
         loanRepository.save(loan);
@@ -85,23 +83,34 @@ public class LoanServiceImpl implements ILoanService {
         //-- 1. Find the loan by loanNumber
         Loans loan = findLoan(loanNumber);
         //-- 2. Extract update values
-        String mobileNumber = updateLoanDto.mobileNumber();
-        String idNumber = updateLoanDto.idNumber();
+        String mobileNumber = updateLoanDto.getMobileNumber();
+        String idNumber = updateLoanDto.getIdNumber();
         //-- If one of the customer unique attributes exists, it becomes an unprocessable entity
         isExist(idNumber, mobileNumber);
         //-- 4. Update attributes
         loan.setMobileNumber(mobileNumber);
         loan.setIdNumber(idNumber);
-        loan.setLoanAmount(updateLoanDto.loanAmount());
-        loan.setMonthlyInstalment(updateLoanDto.monthlyInstalment());
-        loan.setEndDate(updateLoanDto.endDate());
-        loan.setStatus(updateLoanDto.status());
-        loan.setActiveSw(updateLoanDto.activeSw());
+        loan.setLoanAmount(updateLoanDto.getLoanAmount());
+        loan.setMonthlyInstalment(updateLoanDto.getMonthlyInstalment());
+        loan.setEndDate(updateLoanDto.getEndDate());
+        loan.setStatus(updateLoanDto.getStatus());
+        loan.setActiveSw(updateLoanDto.isActiveSw());
         //-- update the loan object
         loanRepository.save(loan);
         //-- 5. return a proper message
         return new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200);
     }
+    /**
+     *
+     * @param loan
+     * @return
+     */
+    @Override
+    public ResponseDto saveLoan(Loans loan) {
+        loanRepository.save(loan);
+        return new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200);
+    }
+
     /**
      *
      * @param loanNumber
@@ -112,7 +121,7 @@ public class LoanServiceImpl implements ILoanService {
         //-- 1. Find the loan by loanNumber
         Loans loan = findLoan(loanNumber);
         //-- 2. Soft delete
-        loan.setOutstandingBalance(0.0);
+        loan.setOutstandingBalance(BigDecimal.ZERO);
         loan.setActiveSw(false);
         loan.setStatus(LoanStatus.CLOSED);
         //-- update the loan object

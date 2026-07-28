@@ -1,11 +1,11 @@
 package za.co.capitec.loans.exceptions;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.server.ServerWebExchange;
 
 import java.time.ZonedDateTime;
 
@@ -16,13 +16,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ApiErrorResponse handleResourceAlreadyExistsException(
             ResourceAlreadyExistsException ex,
-            ServerWebExchange exchange,
+            HttpServletRequest request,
             HandlerMethod method) {
 
         return new ApiErrorResponse(
                 HttpStatus.CONFLICT,
                 ex.getMessage(),
-                exchange.getRequest().getURI().getPath(),
+                request.getRequestURI(),
                 method.getMethod().getName(),
                 ZonedDateTime.now()
         );
@@ -32,13 +32,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ApiErrorResponse handleResourceNotFoundException(
             ResourceNotFoundException ex,
-            ServerWebExchange exchange,
+            HttpServletRequest request,
             HandlerMethod method) {
 
         return new ApiErrorResponse(
                 HttpStatus.NOT_FOUND,
                 ex.getMessage(),
-                exchange.getRequest().getURI().getPath(),
+                request.getRequestURI(),
                 method.getMethod().getName(),
                 ZonedDateTime.now()
         );
@@ -48,13 +48,29 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ApiErrorResponse handleIllegalArgumentException(
             IllegalArgumentException ex,
-            ServerWebExchange exchange,
+            HttpServletRequest request,
             HandlerMethod method) {
 
         return new ApiErrorResponse(
                 HttpStatus.BAD_REQUEST,
                 ex.getMessage(),
-                exchange.getRequest().getURI().getPath(),
+                request.getRequestURI(),
+                method.getMethod().getName(),
+                ZonedDateTime.now()
+        );
+    }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ApiErrorResponse handleInsufficientFundsException(
+            InsufficientFundsException ex,
+            HttpServletRequest request,
+            HandlerMethod method) {
+
+        return new ApiErrorResponse(
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                ex.getMessage(),
+                request.getRequestURI(),
                 method.getMethod().getName(),
                 ZonedDateTime.now()
         );
@@ -64,13 +80,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ApiErrorResponse handleGenericException(
             Exception ex,
-            ServerWebExchange exchange,
+            HttpServletRequest request,
             HandlerMethod method) {
 
         return new ApiErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 ex.getMessage(),
-                exchange.getRequest().getURI().getPath(),
+                request.getRequestURI(),
                 method.getMethod().getName(),
                 ZonedDateTime.now()
         );

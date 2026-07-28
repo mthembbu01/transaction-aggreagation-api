@@ -3,7 +3,7 @@ package za.co.capitec.accounts.utilities;
 import org.springframework.data.domain.Page;
 import za.co.capitec.accounts.dtos.records.TransactionRecord;
 import za.co.capitec.accounts.dtos.response.TransactionResponse;
-import za.co.capitec.accounts.entity.Transactions;
+import za.co.capitec.accounts.entity.AccountsTransactions;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,23 +20,23 @@ public class AccountUtils {
     }
     /**
      *
-     * @param transactions
+     * @param accountsTransactions
      * @return
      */
-    public static TransactionRecord toTransactionRecord(Transactions transactions){
-        return new TransactionRecord(transactions.getAccountType(),
-                transactions.getAmount(),
-                transactions.getCategory(),
-                transactions.getReference(),
-                transactions.getTime(),
-                transactions.getDate());
+    public static TransactionRecord toTransactionRecord(AccountsTransactions accountsTransactions){
+        return new TransactionRecord(accountsTransactions.getAccountType(),
+                accountsTransactions.getAmount(),
+                accountsTransactions.getCategory(),
+                accountsTransactions.getReference(),
+                accountsTransactions.getTime(),
+                accountsTransactions.getDate());
     }
     /**
      *
      * @param pages
      * @return
      */
-    public static TransactionResponse toTransactionResponse(Page<Transactions> pages){
+    public static TransactionResponse toTransactionResponse(Page<AccountsTransactions> pages){
         //-- 1. Define a list of Transaction Records
         List<TransactionRecord> content = pages.getContent()
                 .stream()

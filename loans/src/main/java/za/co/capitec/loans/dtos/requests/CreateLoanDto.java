@@ -1,19 +1,32 @@
 package za.co.capitec.loans.dtos.requests;
 
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import za.co.capitec.loans.enums.LoanType;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record CreateLoanDto(LoanType loanType,
-                             @Pattern(regexp = "^(\\+27|0)?[1-9]\\d{8}$", message = "Invalid mobile number")
-                             String mobileNumber,
-                             @Pattern(regexp = "^\\d{13}$", message = "Invalid ID Number")
-                             String idNumber,
-                             Double loanAmount,
-                             Double monthlyInstalment,
-                             LocalDate startDate,
-                             LocalDate endDate,
-                             boolean activeSw) {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CreateLoanDto {
+    private LoanType loanType;
+
+    @Pattern(regexp = "^(\\+27|0)?[1-9]\\d{8}$", message = "Invalid mobile number")
+    private String mobileNumber;
+
+    @Pattern(regexp = "^\\d{13}$", message = "Invalid ID Number")
+    private String idNumber;
+
+    private BigDecimal loanAmount;
+    private BigDecimal monthlyInstalment;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private boolean activeSw;
 }
 

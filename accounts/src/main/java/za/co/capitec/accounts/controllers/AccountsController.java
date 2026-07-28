@@ -31,7 +31,7 @@ public class AccountsController {
      */
     //-- http://localhost:8080/api/v1/{accountNumber}
     @GetMapping(path = "/{accountNumber}")
-    public ResponseEntity<AccountsRecord> handleFindById(@PathVariable("accountNumber") Long accountNumber) {
+    public ResponseEntity<AccountsRecord> handleFindByAccNumber(@PathVariable("accountNumber") Long accountNumber) {
         log.info("Received find account by id request for accountNumber: {}", accountNumber);
         return new ResponseEntity<>(service.findByAccNumber(accountNumber), HttpStatus.OK);
     }

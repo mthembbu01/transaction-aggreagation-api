@@ -3,7 +3,9 @@ package za.co.capitec.loans.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import za.co.capitec.loans.enums.Categories;
+import za.co.capitec.loans.utilities.dates.DateUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -25,12 +27,22 @@ public class LoanTransactions {
     @Enumerated(EnumType.STRING)
     private Categories category;
 
-    private String description;
-    private Double amount;
-    private Boolean isImmediate = Boolean.FALSE;
+    private BigDecimal amount;
     private String reference;
     private LocalTime time;
     private LocalDate date;
+
+    public static LoanTransactions create(Loans loan, BigDecimal amount, Categories category, String reference){
+        return LoanTransactions
+                .builder()
+                .loan(loan)
+                .amount(amount)
+                .category(category)
+                .reference(reference)
+                .date(DateUtils.getCurrentDate())
+                .time(DateUtils.getCurrentTime())
+                .build();
+    }
 
     @ManyToOne
     @JoinColumn(name = "loan_number")

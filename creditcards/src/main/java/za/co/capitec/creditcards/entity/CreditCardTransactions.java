@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import za.co.capitec.creditcards.enums.Categories;
 import za.co.capitec.creditcards.enums.CreditCardType;
+import za.co.capitec.creditcards.utilities.dates.DateUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -30,11 +32,29 @@ public class CreditCardTransactions {
     private Categories category;
 
     private String description;
-    private Double amount;
-    private Boolean isImmediate = Boolean.FALSE;
-    private String reference;
+    private BigDecimal amount;
     private LocalTime time;
     private LocalDate date;
+    /**
+     * The constructor to create a transaction
+     * @param creditCard
+     * @param description
+     * @param amount
+     * @param category
+     * @return
+     */
+    public static CreditCardTransactions create(CreditCards creditCard, String description, BigDecimal amount, Categories category){
+        return CreditCardTransactions
+                .builder()
+                .creditCard(creditCard)
+                .cardType(creditCard.getCardType())
+                .description(description)
+                .amount(amount)
+                .category(category)
+                .date(DateUtils.getCurrentDate())
+                .time(DateUtils.getCurrentTime())
+                .build();
+    }
 
     @ManyToOne
     @JoinColumn(name = "card_number")

@@ -1,7 +1,6 @@
 package za.co.capitec.customer.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import za.co.capitec.customer.constants.CustomerConstants;
 import za.co.capitec.customer.entity.Customers;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements ICustomerService {
 
@@ -48,15 +46,15 @@ public class CustomerServiceImpl implements ICustomerService {
     @Override
     public ResponseDto createCustomer(CreateCustomerRequest createCustomerRequest) {
         //-- 1. Check if customer with unique attributes already exists
-        isExist(createCustomerRequest.idNumber(), createCustomerRequest.mobileNumber(), createCustomerRequest.email());
+        isExist(createCustomerRequest.getIdNumber(), createCustomerRequest.getMobileNumber(), createCustomerRequest.getEmail());
         //-- 2. Build and save the new customer
         Customers customer = Customers.builder()
-                .firstName(createCustomerRequest.firstname())
-                .lastName(createCustomerRequest.lastName())
-                .address(createCustomerRequest.address())
-                .email(createCustomerRequest.email())
-                .mobileNumber(createCustomerRequest.mobileNumber())
-                .idNumber(createCustomerRequest.idNumber())
+                .firstName(createCustomerRequest.getFirstname())
+                .lastName(createCustomerRequest.getLastName())
+                .address(createCustomerRequest.getAddress())
+                .email(createCustomerRequest.getEmail())
+                .mobileNumber(createCustomerRequest.getMobileNumber())
+                .idNumber(createCustomerRequest.getIdNumber())
                 .activeSw(true)
                 .build();
         customerRepository.save(customer);
@@ -69,12 +67,12 @@ public class CustomerServiceImpl implements ICustomerService {
         //-- 1. Find the customer by ID number
         Customers customer = findCustomer(idNumber);
         //-- 2. Extract update values
-        String firstName = updateCustomerRequest.firstname();
-        String lastName = updateCustomerRequest.lastName();
-        String address = updateCustomerRequest.address();
-        String email = updateCustomerRequest.email();
-        String mobileNumber = updateCustomerRequest.mobileNumber();
-        String updatedIdNumber = updateCustomerRequest.idNumber();
+        String firstName = updateCustomerRequest.getFirstname();
+        String lastName = updateCustomerRequest.getLastName();
+        String address = updateCustomerRequest.getAddress();
+        String email = updateCustomerRequest.getEmail();
+        String mobileNumber = updateCustomerRequest.getMobileNumber();
+        String updatedIdNumber = updateCustomerRequest.getIdNumber();
         //-- 3. Validate unique fields
         isExist(updatedIdNumber, mobileNumber, email);
         //-- 4. Update customer attributes

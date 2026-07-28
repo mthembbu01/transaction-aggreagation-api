@@ -11,15 +11,15 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Table(name = "transactions")
-@Entity(name = "transactions")
+@Table(name = "accounts_transactions")
+@Entity(name = "accounts_transactions")
 @Builder
 @EqualsAndHashCode
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-public class Transactions {
+public class AccountsTransactions {
     @Id
     @SequenceGenerator(name = "account_transactions_sequence",sequenceName = "account_transactions_sequence",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_transactions_sequence")
@@ -48,8 +48,8 @@ public class Transactions {
      * @param reference
      * @return
      */
-    public static Transactions create(Accounts accounts, String description, Boolean isImmediate, BigDecimal amount, Categories category, String reference){
-        return Transactions
+    public static AccountsTransactions create(Accounts accounts, String description, Boolean isImmediate, BigDecimal amount, Categories category, String reference){
+        return AccountsTransactions
                 .builder()
                 .accounts(accounts)
                 .accountType(accounts.getAccountType())

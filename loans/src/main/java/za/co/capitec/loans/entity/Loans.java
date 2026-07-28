@@ -6,6 +6,7 @@ import org.hibernate.proxy.HibernateProxy;
 import za.co.capitec.loans.enums.LoanStatus;
 import za.co.capitec.loans.enums.LoanType;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -31,10 +32,10 @@ public class Loans extends BaseEntity {
 
     private String mobileNumber;
     private String idNumber;
-    private Double loanAmount;
-    private Double outstandingAmount;
-    private Double outstandingBalance;
-    private Double monthlyInstalment;
+    private BigDecimal loanAmount;
+    private BigDecimal outstandingAmount;
+    private BigDecimal outstandingBalance;
+    private BigDecimal monthlyInstalment;
     private LocalDate startDate;
     private LocalDate endDate;
 

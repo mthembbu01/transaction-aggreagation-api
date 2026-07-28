@@ -2,6 +2,7 @@ package za.co.capitec.api_gateway.handler;
 
 
 import za.co.capitec.api_gateway.dto.*;
+import za.co.capitec.api_gateway.dto.accountsTransactions.AccTransactionResponse;
 import za.co.capitec.api_gateway.dto.accountsTransactions.AccountTransaction;
 import za.co.capitec.api_gateway.services.client.CustomerSummaryClient;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,14 @@ public class CustomerCompositeHandler {
         String endDate = request.queryParam("endDate").get();
 
         Mono<ResponseEntity<CustomerDto>> customerDetails = customerSummaryClient.fetchCustomerDetails(idNumber);
-        Mono<ResponseEntity<List<AccountTransaction>>> accountsTransactions = customerSummaryClient.fetchAccountTransactions(idNumber,startDate,endDate);
+        Mono<ResponseEntity<AccTransactionResponse>> accountsTransactions = customerSummaryClient.fetchAccountTransactions(idNumber,startDate,endDate);
 //        Mono<ResponseEntity<LoanTransaction>> loansDetails = customerSummaryClient.fetchLoanDetails(idNumber);
 //        Mono<ResponseEntity<CardsDto>> cardsDetails = customerSummaryClient.fetchCardDetails(idNumber);
         //-- return the combined results
         return Mono.zip(customerDetails,accountsTransactions, null, null)
                 .flatMap(tuple -> {
                     CustomerDto customerDto = tuple.getT1().getBody();
-                    List<AccountTransaction> accountsDto = tuple.getT2().getBody();
+                    AccTransactionResponse accountsDto = tuple.getT2().getBody();
 //                    LoanTransaction loansDto = tuple.getT3().getBody();
 //                    CardsDto cardsDto = tuple.getT4().getBody();
 

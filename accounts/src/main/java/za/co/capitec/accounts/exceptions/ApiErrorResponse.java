@@ -1,13 +1,21 @@
 package za.co.capitec.accounts.exceptions;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.time.ZonedDateTime;
 
-public record ApiErrorResponse(
-        HttpStatus status,
-        String message,
-        String path,
-        String handlerMethod,
-        ZonedDateTime timestamp
-) {}
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ApiErrorResponse {
+    private HttpStatus status;
+    private String message;
+    private String path;
+    private String api;
+    private ZonedDateTime timestamp;
+}

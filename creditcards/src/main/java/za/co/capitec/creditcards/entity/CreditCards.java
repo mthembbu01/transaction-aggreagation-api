@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import za.co.capitec.creditcards.enums.CreditCardType;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -30,10 +31,11 @@ public class CreditCards extends BaseEntity {
     private CreditCardType cardType; // VISA, MASTERCARD, AMEX
     private String mobileNumber;
     private String idNumber;
-    private Double creditLimit;
-    private Double availableCredit;
-    private Double outstandingBalance;
-    private Double minimumPayment;
+    private BigDecimal amount;
+    private BigDecimal creditLimit;
+    private BigDecimal availableCredit;
+    private BigDecimal outstandingBalance;
+    private BigDecimal minimumPayment;
     private LocalDate issueDate;
     private LocalDate expiryDate;
     private boolean activeSw;

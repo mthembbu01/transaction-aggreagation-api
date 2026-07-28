@@ -1,19 +1,28 @@
 package za.co.capitec.creditcards.dtos.records;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import za.co.capitec.creditcards.enums.CreditCardType;
 
 import java.time.LocalDate;
 
-public record CreditCardRecord(Long cardNumber,
-                                CreditCardType cardType,
-                                String mobileNumber,
-                                String idNumber,
-                                Double creditLimit,
-                                Double availableCredit,
-                               Double outstandingBalance,
-                               Double minimumPayment,
-                               LocalDate issueDate,
-                               LocalDate expiryDate,
-                                boolean activeSw) {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CreditCardRecord {
+    private Long cardNumber;
+    private CreditCardType cardType;
+    private String mobileNumber;
+    private String idNumber;
+    private Double creditLimit;
+    private Double availableCredit;
+    private Double outstandingBalance;
+    private Double minimumPayment;
+    private LocalDate issueDate;
+    private LocalDate expiryDate;
+    private boolean activeSw;
 }
 
