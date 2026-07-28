@@ -15,6 +15,4 @@ public interface ITransactionService {
                                           LocalDate dateFrom,
                                           LocalDate dateTo);
     ResponseDto transact(TransactionDto transactionDto);
-    ResponseDto creditAccount(Accounts account, BigDecimal amount, Categories transactionType, String reference);
-    ResponseDto debitAccount(Accounts account, BigDecimal amount, Categories transactionType, String reference);
 }

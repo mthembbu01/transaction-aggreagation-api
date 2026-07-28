@@ -57,8 +57,8 @@ public class AccountTransactionServiceImpl implements ITransactionService {
      * @param reference
      * @return
      */
-    @Override
-    public ResponseDto creditAccount(Accounts account, BigDecimal amount, Categories transactionType, String reference) {
+
+    private ResponseDto creditAccount(Accounts account, BigDecimal amount, Categories transactionType, String reference) {
         List<AccountsTransactions> transactions = new ArrayList<>();
         //-- 1. credit the account
         //-- add the original amount
@@ -95,8 +95,7 @@ public class AccountTransactionServiceImpl implements ITransactionService {
      * @param reference
      * @return
      */
-    @Override
-    public ResponseDto debitAccount(Accounts account, BigDecimal amount, Categories transactionType, String reference) {
+    private ResponseDto debitAccount(Accounts account, BigDecimal amount, Categories transactionType, String reference) {
         //-- 1. check for sufficient funds
         if (account.getBalance().compareTo(amount) < 0)
             throw new InsufficientFundsException("Insufficient funds!");
