@@ -1,9 +1,9 @@
 package za.co.capitec.accounts.utilities;
 
 import org.springframework.data.domain.Page;
-import za.co.capitec.accounts.dtos.records.TransactionRecord;
-import za.co.capitec.accounts.dtos.response.TransactionResponse;
 import za.co.capitec.accounts.entity.AccountsTransactions;
+import za.co.capitec.coreapi.dtos.accounts.records.TransactionRecord;
+import za.co.capitec.coreapi.dtos.accounts.response.TransactionResponse;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;

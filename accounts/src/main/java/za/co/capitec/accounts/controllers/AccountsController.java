@@ -7,12 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.capitec.accounts.dtos.records.AccountsRecord;
-import za.co.capitec.accounts.dtos.requests.CreateAccountsDto;
-import za.co.capitec.accounts.dtos.requests.UpdateAccountDto;
-import za.co.capitec.accounts.dtos.response.AccountsResponse;
-import za.co.capitec.accounts.dtos.response.ResponseDto;
 import za.co.capitec.accounts.services.IAccountService;
+import za.co.capitec.coreapi.dtos.accounts.records.AccountsRecord;
+import za.co.capitec.coreapi.dtos.accounts.requests.CreateAccountsDto;
+import za.co.capitec.coreapi.dtos.accounts.requests.UpdateAccountDto;
+import za.co.capitec.coreapi.dtos.ResponseDto;
 
 import java.util.List;
 

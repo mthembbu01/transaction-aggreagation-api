@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import za.co.capitec.loans.enums.Categories;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 public class LoanTransactionDto {
     private Long loanNumber;
     private String description;
-    private Double amount;
+    private BigDecimal amount;
     private Boolean isImmediate = Boolean.FALSE;
     private LocalDate timestamp;
     private Categories category;

@@ -1,11 +1,10 @@
 package za.co.capitec.accounts.services;
 
-import org.springframework.data.domain.Pageable;
-import za.co.capitec.accounts.dtos.requests.TransactionDto;
-import za.co.capitec.accounts.dtos.response.ResponseDto;
-import za.co.capitec.accounts.dtos.response.TransactionResponse;
 import za.co.capitec.accounts.entity.Accounts;
-import za.co.capitec.accounts.enums.Categories;
+import za.co.capitec.coreapi.dtos.accounts.requests.TransactionDto;
+import za.co.capitec.coreapi.dtos.ResponseDto;
+import za.co.capitec.coreapi.dtos.accounts.response.TransactionResponse;
+import za.co.capitec.coreapi.enums.Categories;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

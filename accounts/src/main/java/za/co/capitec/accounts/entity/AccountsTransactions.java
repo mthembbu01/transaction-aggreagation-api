@@ -3,9 +3,9 @@ package za.co.capitec.accounts.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import za.co.capitec.accounts.enums.AccountType;
-import za.co.capitec.accounts.enums.Categories;
 import za.co.capitec.accounts.utilities.dates.DateUtils;
+import za.co.capitec.coreapi.enums.Categories;
+import za.co.capitec.coreapi.enums.accounts.AccountType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

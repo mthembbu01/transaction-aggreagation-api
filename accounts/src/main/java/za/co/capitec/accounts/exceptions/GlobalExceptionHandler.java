@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.HandlerMethod;
+import za.co.capitec.coreapi.exceptions.ApiErrorResponse;
+import za.co.capitec.coreapi.exceptions.InsufficientFundsException;
+import za.co.capitec.coreapi.exceptions.ResourceAlreadyExistsException;
+import za.co.capitec.coreapi.exceptions.ResourceNotFoundException;
 
 import java.time.ZonedDateTime;
 

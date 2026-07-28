@@ -4,16 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import za.co.capitec.accounts.constants.AccountsConstants;
-import za.co.capitec.accounts.dtos.records.AccountsRecord;
-import za.co.capitec.accounts.dtos.requests.CreateAccountsDto;
-import za.co.capitec.accounts.dtos.requests.UpdateAccountDto;
-import za.co.capitec.accounts.dtos.response.ResponseDto;
 import za.co.capitec.accounts.entity.Accounts;
-import za.co.capitec.accounts.exceptions.ResourceAlreadyExistsException;
-import za.co.capitec.accounts.exceptions.ResourceNotFoundException;
 import za.co.capitec.accounts.repositories.AccountsRepository;
 import za.co.capitec.accounts.services.IAccountService;
 import za.co.capitec.accounts.utilities.AccountUtils;
+import za.co.capitec.coreapi.dtos.ResponseDto;
+import za.co.capitec.coreapi.dtos.accounts.records.AccountsRecord;
+import za.co.capitec.coreapi.dtos.accounts.requests.CreateAccountsDto;
+import za.co.capitec.coreapi.dtos.accounts.requests.UpdateAccountDto;
+import za.co.capitec.coreapi.exceptions.ResourceAlreadyExistsException;
+import za.co.capitec.coreapi.exceptions.ResourceNotFoundException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,7 +26,6 @@ public class AccountsServiceImpl implements IAccountService {
     private final AccountsRepository accountsRepository;
 
     private final ModelMapper modelMapper;
-
     /**
      * The method to create an account for a customer. It first maps the CreateAccountsDto to Accounts entity,
      * checks if the account already exists based on unique attributes (ID Number and Mobile Number),

@@ -29,7 +29,17 @@ public class LoanTransactionServiceImpl implements ILoanTransactionService {
 
     @Override
     public ResponseDto transact(LoanTransactionDto transactionDto) {
-        return null;
+        //-- 1. Deconstruct the component into it's basic components
+        Long loanNumber = transactionDto.getLoanNumber();
+        Loans loan = loanService.findLoan(loanNumber);
+        BigDecimal amount = transactionDto.getAmount();
+        Categories categories = transactionDto.getCategory();
+        String reference = transactionDto.getReference();
+        //-- check the transaction type and call the correct method
+        if(categories == Categories.CREDIT || categories == Categories.DEPOSIT)
+            return creditAccount(loan, amount, categories, reference);
+         else
+            return debitAccount(loan, amount, categories, reference);
     }
     /**
      *

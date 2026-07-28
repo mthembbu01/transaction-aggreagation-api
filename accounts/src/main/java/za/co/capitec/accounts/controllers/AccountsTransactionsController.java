@@ -6,12 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.capitec.accounts.dtos.requests.TransactionDto;
-import za.co.capitec.accounts.dtos.requests.TransferDto;
-import za.co.capitec.accounts.dtos.response.AccountTransaction;
-import za.co.capitec.accounts.dtos.response.ResponseDto;
-import za.co.capitec.accounts.dtos.response.TransactionResponse;
 import za.co.capitec.accounts.services.ITransactionService;
+import za.co.capitec.coreapi.dtos.ResponseDto;
+import za.co.capitec.coreapi.dtos.accounts.requests.TransactionDto;
+import za.co.capitec.coreapi.dtos.accounts.response.TransactionResponse;
 
 import java.time.LocalDate;
 import java.util.List;

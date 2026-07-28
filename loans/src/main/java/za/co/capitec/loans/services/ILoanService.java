@@ -14,6 +14,7 @@ public interface ILoanService {
 	ResponseDto createLoan(CreateLoanDto createLoanDto);
 	ResponseDto updateLoanByLoanNumber(Long loanNumber, UpdateLoanDto updateLoanDto);
 	ResponseDto saveLoan(Loans loan);
+	Loans findLoan(Long loanNumber);
 	ResponseDto deleteLoanByLoanNumber(Long loanNumber);
 }
 

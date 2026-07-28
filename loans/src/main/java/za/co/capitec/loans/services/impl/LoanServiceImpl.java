@@ -152,7 +152,8 @@ public class LoanServiceImpl implements ILoanService {
      * @param loanNumber
      * @return
      */
-    private Loans findLoan(Long loanNumber) {
+    @Override
+    public Loans findLoan(Long loanNumber) {
         return loanRepository.findByLoanNumber(loanNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("Loan", "Loan Number", String.valueOf(loanNumber)));
     }
