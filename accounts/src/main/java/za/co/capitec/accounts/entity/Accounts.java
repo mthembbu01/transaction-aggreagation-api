@@ -21,10 +21,11 @@ public class Accounts extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "accounts_sequence")
     private Long id;
 
-    @Column(name = "account_number")
     private Long accountNumber;
+
     @Enumerated(EnumType.STRING)
     private AccountType accountType; // SAVINGS, CHEQUE, Transactional
+
     private BigDecimal balance;
     private String mobileNumber;
     private String idNumber;

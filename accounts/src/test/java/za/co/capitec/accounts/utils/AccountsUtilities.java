@@ -1,9 +1,11 @@
 package za.co.capitec.accounts.utils;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class AccountsUtilities {
 
     public static Long setAccountNumber(){return 1234567890L;}
-    public static Long updatedAccountNumber(){ return 1234567892L;}
+    public static Long updatedAccountNumber(){ return 1234567891L;}
 
     public static String setContactNumber(){return "0788298725";}
     public static String updatedContactNumber(){return "0788298726";}

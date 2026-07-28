@@ -45,6 +45,6 @@ public class LoanTransactions {
     }
 
     @ManyToOne
-    @JoinColumn(name = "loan_number")
+    @JoinColumn(name = "loan_id", referencedColumnName = "id")
     private Loans loan;
 }

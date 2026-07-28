@@ -64,6 +64,6 @@ public class AccountsTransactions {
     }
 
     @ManyToOne
-    @JoinColumn(name = "account_number")
+    @JoinColumn(name = "accounts_id", referencedColumnName = "id")
     private Accounts accounts;
 }

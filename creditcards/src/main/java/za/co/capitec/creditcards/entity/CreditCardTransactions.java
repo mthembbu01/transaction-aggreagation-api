@@ -57,6 +57,6 @@ public class CreditCardTransactions {
     }
 
     @ManyToOne
-    @JoinColumn(name = "card_number")
+    @JoinColumn(name = "card_id")
     private CreditCards creditCard;
 }

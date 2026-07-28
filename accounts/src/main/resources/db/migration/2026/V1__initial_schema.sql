@@ -84,11 +84,11 @@ CREATE TABLE IF NOT EXISTS accounts_transactions (
     time            TIME,
     date            DATE,
 
-    -- @ManyToOne @JoinColumn(name = "account_number") → references accounts.id
-    account_number  BIGINT,
+    -- @ManyToOne @JoinColumn(name = "accounts_id") → references accounts.id
+    accounts_id  BIGINT,
 
     CONSTRAINT pk_accounts_transactions         PRIMARY KEY (id),
-    CONSTRAINT fk_accounts_transactions_account FOREIGN KEY (account_number)
+    CONSTRAINT fk_accounts_transactions_account FOREIGN KEY (accounts_id)
                                                 REFERENCES accounts (id)
                                                 ON DELETE CASCADE
 );
@@ -104,8 +104,8 @@ CREATE INDEX IF NOT EXISTS idx_accounts_account_number
     ON accounts (account_number);
 
 -- Lookup transactions for a specific account
-CREATE INDEX IF NOT EXISTS idx_accounts_transactions_account_number
-    ON accounts_transactions (account_number);
+CREATE INDEX IF NOT EXISTS idx_accounts_transactions_accounts_id
+    ON accounts_transactions (accounts_id);
 
 -- Date-range queries (bank statements)
 CREATE INDEX IF NOT EXISTS idx_accounts_transactions_date

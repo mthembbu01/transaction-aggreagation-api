@@ -5,8 +5,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import za.co.capitec.accounts.TestcontainersConfiguration;
+import za.co.capitec.accounts.Abstracts.AbstractContainersTest;
 import za.co.capitec.accounts.entity.Accounts;
 import za.co.capitec.accounts.entity.AccountsTransactions;
 import za.co.capitec.accounts.repositories.AccountsRepository;
@@ -24,11 +23,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import(TestcontainersConfiguration.class)
 @Slf4j
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class AccountsRepositoryTest {
+public class AccountsRepositoryTest extends AbstractContainersTest {
 
     @Autowired
     AccountsRepository accountsRepository;
