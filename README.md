@@ -8,7 +8,7 @@ The system consists of the following components:
 
 - **Eureka Server** (Port 8070) - Service Discovery
 - **API Gateway** (Port 8071) - API routing and load balancing
-- **Accounts Service** - Core account management and transactions
+- **Accounts Service** - Core account management and accountsTransactions
 - **Customer Service** - Customer profile and information
 - **Credit Cards Service** - Credit card management
 - **Loans Service** - Loan management and tracking
