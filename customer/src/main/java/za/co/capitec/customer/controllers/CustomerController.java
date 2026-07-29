@@ -6,10 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.capitec.customer.entity.dtos.records.CustomersRecord;
-import za.co.capitec.customer.entity.dtos.requests.CreateCustomerRequest;
-import za.co.capitec.customer.entity.dtos.requests.UpdateCustomerRequest;
-import za.co.capitec.customer.entity.dtos.response.ResponseDto;
+import za.co.capitec.coreapi.dtos.ResponseDto;
+import za.co.capitec.coreapi.dtos.customer.records.CustomersRecord;
+import za.co.capitec.coreapi.dtos.customer.requests.CreateCustomerRequest;
+import za.co.capitec.coreapi.dtos.customer.requests.UpdateCustomerRequest;
+import za.co.capitec.coreapi.dtos.customer.response.CustomerResponse;
 import za.co.capitec.customer.services.ICustomerService;
 
 import java.util.List;
@@ -32,9 +33,12 @@ public class CustomerController {
 
     //-- http://localhost:8080/api/v1/customers?idNumber=1234567890123
     @GetMapping(path = "/customers")
-    public ResponseEntity<List<CustomersRecord>> handleFindByIDNumber(@RequestParam("idNumber") @Pattern(regexp = "\\d{13}") String idNumber) {
-        log.info("Received find customers by ID Number: {}", idNumber);
-        return new ResponseEntity<>(service.findCustomersByIdNumber(idNumber), HttpStatus.OK);
+    public ResponseEntity<CustomerResponse> handleFindAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                                           @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                           @RequestParam(value = "sortBy", defaultValue = "date", required = false) String sortBy,
+                                                           @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir) {
+        log.info("Received find all customers");
+        return new ResponseEntity<>(service.findAll(pageNo, pageSize, sortBy, sortDir), HttpStatus.OK);
     }
 
     //-- http://localhost:8080/api/v1/customer

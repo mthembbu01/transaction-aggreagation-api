@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import za.co.capitec.customer.entity.Customers;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,4 @@ public interface CustomerRepository extends JpaRepository<Customers, Long> {
     boolean existsByEmail(String email);
 
     List<Customers> findAllByIdNumber(String idNumber);
-
-    Page<Customers> findAllByIdNumber(String idNumber, Pageable pageable);
 }

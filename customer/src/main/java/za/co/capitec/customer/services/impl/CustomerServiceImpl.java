@@ -1,17 +1,23 @@
 package za.co.capitec.customer.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import za.co.capitec.coreapi.dtos.ResponseDto;
+import za.co.capitec.coreapi.dtos.customer.records.CustomersRecord;
+import za.co.capitec.coreapi.dtos.customer.requests.CreateCustomerRequest;
+import za.co.capitec.coreapi.dtos.customer.requests.UpdateCustomerRequest;
+import za.co.capitec.coreapi.dtos.customer.response.CustomerResponse;
 import za.co.capitec.customer.constants.CustomerConstants;
 import za.co.capitec.customer.entity.Customers;
-import za.co.capitec.customer.entity.dtos.records.CustomersRecord;
-import za.co.capitec.customer.entity.dtos.requests.CreateCustomerRequest;
-import za.co.capitec.customer.entity.dtos.requests.UpdateCustomerRequest;
-import za.co.capitec.customer.entity.dtos.response.ResponseDto;
 import za.co.capitec.customer.exceptions.ResourceAlreadyExistsException;
 import za.co.capitec.customer.exceptions.ResourceNotFoundException;
 import za.co.capitec.customer.repositories.CustomerRepository;
 import za.co.capitec.customer.services.ICustomerService;
+import za.co.capitec.customer.utilities.dates.CustomerUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,26 +29,42 @@ public class CustomerServiceImpl implements ICustomerService {
 
     private final CustomerRepository customerRepository;
 
+    /**
+     *
+     * @param idNumber
+     * @return
+     */
     @Override
     public CustomersRecord findByIdNumber(String idNumber) {
         //-- 1. Find the customer by ID number
         Customers customer = findCustomer(idNumber);
         //-- 2. Return the Customer Record
-        return toRecord(customer);
+        return CustomerUtils.toRecord(customer);
     }
-
+    /**
+     *
+     * @param pageNo
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @Override
-    public List<CustomersRecord> findCustomersByIdNumber(String idNumber) {
-        //-- does the customer exist by idNumber
-        if (!customerRepository.existsByIdNumber(idNumber))
-            throw new ResourceNotFoundException("Customer", "ID Number", idNumber);
-        //-- 1. Find the customer by ID number
-        return customerRepository.findAllByIdNumber(idNumber).stream()
-                .filter(Customers::isActiveSw)
-                .map(this::toRecord)
-                .collect(Collectors.toList());
+    public CustomerResponse findAll(int pageNo, int pageSize, String sortBy, String sortDir) {
+        //-- conditional sort object declaration
+        Sort sort = sortDirection(sortBy, sortDir);
+        //-- 1. create a pageable instance. Add sortDirection: Ascending or Descending order
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+        //-- 2. Find all Customers using the Pageable above
+        Page<Customers> page = customerRepository.findAll(pageable);
+        //-- 3. Return the Customer Response for pagination
+        return CustomerUtils.toCustomerResponse(page);
     }
-
+    /**
+     *
+     * @param createCustomerRequest
+     * @return
+     */
     @Override
     public ResponseDto createCustomer(CreateCustomerRequest createCustomerRequest) {
         //-- 1. Check if customer with unique attributes already exists
@@ -61,7 +83,12 @@ public class CustomerServiceImpl implements ICustomerService {
         //-- 3. Return the response
         return new ResponseDto(CustomerConstants.STATUS_201, CustomerConstants.MESSAGE_201);
     }
-
+    /**
+     *
+     * @param idNumber
+     * @param updateCustomerRequest
+     * @return
+     */
     @Override
     public ResponseDto updateCustomerByIdNumber(String idNumber, UpdateCustomerRequest updateCustomerRequest) {
         //-- 1. Find the customer by ID number
@@ -86,7 +113,11 @@ public class CustomerServiceImpl implements ICustomerService {
         //-- 5. return a proper message
         return new ResponseDto(CustomerConstants.STATUS_200, CustomerConstants.MESSAGE_200);
     }
-
+    /**
+     *
+     * @param idNumber
+     * @return
+     */
     @Override
     public ResponseDto deleteCustomerByIdNumber(String idNumber) {
         //-- 1. Find the customer by ID number
@@ -97,7 +128,21 @@ public class CustomerServiceImpl implements ICustomerService {
         //-- 3. return a proper message
         return new ResponseDto(CustomerConstants.STATUS_204, CustomerConstants.MESSAGE_204);
     }
-
+    /**
+     *
+     * @param idNumber
+     * @return
+     */
+    private Customers findCustomer(String idNumber) {
+        return customerRepository.findByIdNumber(idNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "ID Number", idNumber));
+    }
+    /**
+     *
+     * @param idNumber
+     * @param mobileNumber
+     * @param email
+     */
     private void isExist(String idNumber, String mobileNumber, String email) {
         if (customerRepository.existsByIdNumber(idNumber)) {
             throw new ResourceAlreadyExistsException("Customer", "ID Number", idNumber);
@@ -109,22 +154,14 @@ public class CustomerServiceImpl implements ICustomerService {
             throw new ResourceAlreadyExistsException("Customer", "Email", email);
         }
     }
-
-    private Customers findCustomer(String idNumber) {
-        return customerRepository.findByIdNumber(idNumber)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "ID Number", idNumber));
-    }
-
-    private CustomersRecord toRecord(Customers customer) {
-        return new CustomersRecord(
-                customer.getFirstName(),
-                customer.getLastName(),
-                customer.getMobileNumber(),
-                customer.getIdNumber(),
-                customer.getEmail(),
-                customer.getAddress(),
-                customer.isActiveSw()
-        );
+    /**
+     * @param sortBy ascending or descending order
+     * @param sortDir
+     * @return
+     */
+    private Sort sortDirection(String sortBy, String sortDir) {
+        return sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
     }
 }
 
