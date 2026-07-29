@@ -100,8 +100,8 @@ public class CustomerServiceImpl implements ICustomerService {
         String email = updateCustomerRequest.getEmail();
         String mobileNumber = updateCustomerRequest.getMobileNumber();
         String updatedIdNumber = updateCustomerRequest.getIdNumber();
-        //-- 3. Validate unique fields
-        isExist(updatedIdNumber, mobileNumber, email);
+        //-- 3. Validate unique fields (exclude the customer being updated)
+        isExistForUpdate(customer.getId(), updatedIdNumber, mobileNumber, email);
         //-- 4. Update customer attributes
         customer.setFirstName(firstName);
         customer.setLastName(lastName);
@@ -135,7 +135,22 @@ public class CustomerServiceImpl implements ICustomerService {
      */
     private Customers findCustomer(String idNumber) {
         return customerRepository.findByIdNumber(idNumber)
+                .filter(Customers::isActiveSw)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer", "ID Number", idNumber));
+    }
+    /**
+     * Uniqueness guard for updates — ignores the record being updated.
+     */
+    private void isExistForUpdate(Long currentId, String idNumber, String mobileNumber, String email) {
+        if (customerRepository.existsByIdNumberAndIdNot(idNumber, currentId)) {
+            throw new ResourceAlreadyExistsException("Customer", "ID Number", idNumber);
+        }
+        if (customerRepository.existsByMobileNumberAndIdNot(mobileNumber, currentId)) {
+            throw new ResourceAlreadyExistsException("Customer", "Mobile Number", mobileNumber);
+        }
+        if (customerRepository.existsByEmailAndIdNot(email, currentId)) {
+            throw new ResourceAlreadyExistsException("Customer", "Email", email);
+        }
     }
     /**
      *

@@ -1,4 +1,4 @@
-package za.co.capitec.api_gateway.dto;
+package za.co.capitec.api_gateway.dto.loansTransactions;
 
 import lombok.Data;
 

@@ -31,12 +31,12 @@ public class CustomerController {
         return new ResponseEntity<>(service.findByIdNumber(idNumber), HttpStatus.OK);
     }
 
-    //-- http://localhost:8080/api/v1/customers?idNumber=1234567890123
+    //-- http://localhost:8080/api/v1/customers?pageNo=0&pageSize=10&sortBy=date&sortDir=asc
     @GetMapping(path = "/customers")
     public ResponseEntity<CustomerResponse> handleFindAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                                           @RequestParam(value = "sortBy", defaultValue = "date", required = false) String sortBy,
-                                                           @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir) {
+                                                           @RequestParam(value = "sortBy", defaultValue = "lastName", required = false) String sortBy,
+                                                           @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
         log.info("Received find all customers");
         return new ResponseEntity<>(service.findAll(pageNo, pageSize, sortBy, sortDir), HttpStatus.OK);
     }
