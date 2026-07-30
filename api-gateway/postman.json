@@ -1,0 +1,220 @@
+{
+  "info": {
+    "_postman_id": "c4a9a12d-8ee9-4dd6-a4b6-4f7885bc64b0",
+    "name": "Capitec Transaction Aggregation API Gateway",
+    "description": "Postman collection for api-gateway composite and proxy endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Composite",
+      "item": [
+        {
+          "name": "Get Customer Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/composite/customersummary?idNumber={{idNumber}}&startDate={{startDate}}&endDate={{endDate}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "composite",
+                "customersummary"
+              ],
+              "query": [
+                {
+                  "key": "idNumber",
+                  "value": "{{idNumber}}"
+                },
+                {
+                  "key": "startDate",
+                  "value": "{{startDate}}"
+                },
+                {
+                  "key": "endDate",
+                  "value": "{{endDate}}"
+                }
+              ]
+            },
+            "description": "Aggregates customer profile, account transactions, card transactions, and loan transactions."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Proxied Services",
+      "item": [
+        {
+          "name": "Accounts - Example",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/capitec/accounts/transactions?idNumber={{idNumber}}&startDate={{startDate}}&endDate={{endDate}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "capitec",
+                "accounts",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "idNumber",
+                  "value": "{{idNumber}}"
+                },
+                {
+                  "key": "startDate",
+                  "value": "{{startDate}}"
+                },
+                {
+                  "key": "endDate",
+                  "value": "{{endDate}}"
+                }
+              ]
+            },
+            "description": "Example proxied account transactions call (path may vary by downstream service contract)."
+          },
+          "response": []
+        },
+        {
+          "name": "Cards - Example",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/capitec/cards/transactions?idNumber={{idNumber}}&startDate={{startDate}}&endDate={{endDate}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "capitec",
+                "cards",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "idNumber",
+                  "value": "{{idNumber}}"
+                },
+                {
+                  "key": "startDate",
+                  "value": "{{startDate}}"
+                },
+                {
+                  "key": "endDate",
+                  "value": "{{endDate}}"
+                }
+              ]
+            },
+            "description": "Example proxied card transactions call (path may vary by downstream service contract)."
+          },
+          "response": []
+        },
+        {
+          "name": "Loans - Example",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/capitec/loans/transactions?idNumber={{idNumber}}&startDate={{startDate}}&endDate={{endDate}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "capitec",
+                "loans",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "idNumber",
+                  "value": "{{idNumber}}"
+                },
+                {
+                  "key": "startDate",
+                  "value": "{{startDate}}"
+                },
+                {
+                  "key": "endDate",
+                  "value": "{{endDate}}"
+                }
+              ]
+            },
+            "description": "Example proxied loan transactions call (path may vary by downstream service contract)."
+          },
+          "response": []
+        },
+        {
+          "name": "Customers - Example",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/capitec/customers/{{idNumber}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "capitec",
+                "customers",
+                "{{idNumber}}"
+              ]
+            },
+            "description": "Example proxied customer details call (path may vary by downstream service contract)."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8071"
+    },
+    {
+      "key": "idNumber",
+      "value": "1234567890"
+    },
+    {
+      "key": "startDate",
+      "value": "2024-01-01"
+    },
+    {
+      "key": "endDate",
+      "value": "2024-12-31"
+    }
+  ]
+}
+

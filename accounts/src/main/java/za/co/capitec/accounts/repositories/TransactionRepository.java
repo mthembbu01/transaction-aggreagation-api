@@ -13,6 +13,4 @@ public interface TransactionRepository extends JpaRepository<AccountsTransaction
                                                                     String idNumber,
                                                                     LocalDate dateFrom,
                                                                     LocalDate dateTo);
-
-    List<AccountsTransactions> findAllByAccountsAccountNumber(Long accountNumber);
 }

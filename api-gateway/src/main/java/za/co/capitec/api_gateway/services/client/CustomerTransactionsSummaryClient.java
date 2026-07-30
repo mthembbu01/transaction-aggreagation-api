@@ -7,8 +7,7 @@ import reactor.core.publisher.Mono;
 import za.co.capitec.coreapi.dtos.accounts.response.TransactionResponse;
 import za.co.capitec.coreapi.dtos.creditcards.response.CreditCardTransactionResponse;
 import za.co.capitec.coreapi.dtos.customer.records.CustomersRecord;
-
-import java.util.List;
+import za.co.capitec.coreapi.dtos.loans.response.LoanTransactionResponse;
 
 public interface CustomerTransactionsSummaryClient {
 
@@ -26,8 +25,8 @@ public interface CustomerTransactionsSummaryClient {
                                                                                     @PathVariable(value = "endDate") String endDate);
 
     @GetExchange(value = "/capitec/loans/api/v1/transaction/{idNumber}/{startDate}/{endDate}?pageNo=0&pageSize=10&sortBy=date&sortDir=asc",accept = "application/json")
-    Mono<ResponseEntity<List<AccountTransaction>>> fetchLoanTransactions(@PathVariable(value = "idNumber") String idNumber,
-                                                                            @PathVariable(value = "startDate") String startDate,
-                                                                            @PathVariable(value = "endDate") String endDate);
+    Mono<ResponseEntity<LoanTransactionResponse>> fetchLoanTransactions(@PathVariable(value = "idNumber") String idNumber,
+                                                                       @PathVariable(value = "startDate") String startDate,
+                                                                       @PathVariable(value = "endDate") String endDate);
 
 }
