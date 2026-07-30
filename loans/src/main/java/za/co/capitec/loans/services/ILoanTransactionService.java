@@ -4,12 +4,12 @@ package za.co.capitec.loans.services;
 
 
 
-import za.co.capitec.loans.dtos.records.LoanTransactionRecord;
-import za.co.capitec.loans.dtos.requests.LoanTransactionDto;
-import za.co.capitec.loans.dtos.response.LoanTransactionResponse;
-import za.co.capitec.loans.dtos.response.ResponseDto;
+
+import za.co.capitec.coreapi.dtos.ResponseDto;
+import za.co.capitec.coreapi.dtos.loans.requests.LoanTransactionDto;
+import za.co.capitec.coreapi.dtos.loans.response.LoanTransactionResponse;
+import za.co.capitec.coreapi.enums.Categories;
 import za.co.capitec.loans.entity.Loans;
-import za.co.capitec.loans.enums.Categories;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
