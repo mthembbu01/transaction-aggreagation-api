@@ -1,6 +1,6 @@
 spring:
   application:
-    name: accounts
+    name: ACCOUNTS  # or accounts, and ensure Gateway route uses correct case-insensitive lookup accounts
   threads:
     virtual:
       enabled: true

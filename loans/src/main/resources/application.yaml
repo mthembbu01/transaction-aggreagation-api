@@ -1,6 +1,6 @@
 spring:
   application:
-    name: loans
+    name: LOANS  # or loans, and ensure Gateway route uses correct case-insensitive lookup loans
   threads:
     virtual:
       enabled: true

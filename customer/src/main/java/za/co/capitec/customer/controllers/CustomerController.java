@@ -41,13 +41,13 @@ public class CustomerController {
         return new ResponseEntity<>(service.findAll(pageNo, pageSize, sortBy, sortDir), HttpStatus.OK);
     }
 
-    //-- http://localhost:8080/api/v1/customer
+    //-- http://localhost:8080/api/v1
     @PostMapping
     public ResponseEntity<ResponseDto> handleCreate(@RequestBody CreateCustomerRequest createCustomerRequest) {
         log.info("Received create new customer request {}", createCustomerRequest);
         return new ResponseEntity<>(service.createCustomer(createCustomerRequest), HttpStatus.CREATED);
     }
-    //-- http://localhost:8080/api/v1/customer/{idNumber}
+    //-- http://localhost:8080/api/v1/{idNumber}
     @PutMapping(path = "/{idNumber}")
     public ResponseEntity<ResponseDto> handleUpdate(@PathVariable("idNumber") String idNumber,@RequestBody UpdateCustomerRequest updateCustomerRequest) {
         log.info("Received the update Customer request with ID number: {}", idNumber);
