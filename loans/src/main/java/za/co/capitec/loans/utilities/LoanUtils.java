@@ -1,8 +1,8 @@
 package za.co.capitec.loans.utilities;
 
 import org.springframework.data.domain.Page;
-import za.co.capitec.loans.dtos.records.LoanTransactionRecord;
-import za.co.capitec.loans.dtos.response.LoanTransactionResponse;
+import za.co.capitec.coreapi.dtos.loans.records.LoanTransactionRecord;
+import za.co.capitec.coreapi.dtos.loans.response.LoanTransactionResponse;
 import za.co.capitec.loans.entity.LoanTransactions;
 
 import java.util.List;

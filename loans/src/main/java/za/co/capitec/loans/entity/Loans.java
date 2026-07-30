@@ -3,8 +3,8 @@ package za.co.capitec.loans.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
-import za.co.capitec.loans.enums.LoanStatus;
-import za.co.capitec.loans.enums.LoanType;
+import za.co.capitec.coreapi.enums.loans.LoanStatus;
+import za.co.capitec.coreapi.enums.loans.LoanType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
-import za.co.capitec.api_gateway.services.client.CustomerSummaryClient;
+import za.co.capitec.api_gateway.services.client.CustomerTransactionsSummaryClient;
 
 @Configuration
 public class ClientConfig {
@@ -16,11 +16,11 @@ public class ClientConfig {
     private String baseUrl;
 
     @Bean
-    CustomerSummaryClient customerClient() {
+    CustomerTransactionsSummaryClient customerClient() {
         WebClient  webClient = WebClient.builder().baseUrl(baseUrl).build();
         WebClientAdapter webClientAdapter =  WebClientAdapter.create(webClient);
 
         HttpServiceProxyFactory factory =  HttpServiceProxyFactory.builderFor(webClientAdapter).build();
-        return factory.createClient(CustomerSummaryClient.class);
+        return factory.createClient(CustomerTransactionsSummaryClient.class);
     }
 }

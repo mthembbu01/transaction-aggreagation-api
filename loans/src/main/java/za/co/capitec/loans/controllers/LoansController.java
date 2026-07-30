@@ -6,10 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.capitec.loans.dtos.records.LoanRecord;
-import za.co.capitec.loans.dtos.requests.CreateLoanDto;
-import za.co.capitec.loans.dtos.requests.UpdateLoanDto;
-import za.co.capitec.loans.dtos.response.ResponseDto;
+import za.co.capitec.coreapi.dtos.ResponseDto;
+import za.co.capitec.coreapi.dtos.loans.records.LoanRecord;
+import za.co.capitec.coreapi.dtos.loans.requests.CreateLoanDto;
+import za.co.capitec.coreapi.dtos.loans.requests.UpdateLoanDto;
 import za.co.capitec.loans.services.ILoanService;
 
 import java.util.List;

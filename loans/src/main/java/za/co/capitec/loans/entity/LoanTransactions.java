@@ -2,8 +2,9 @@ package za.co.capitec.loans.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import za.co.capitec.loans.enums.Categories;
+import za.co.capitec.coreapi.enums.Categories;
 import za.co.capitec.loans.utilities.dates.DateUtils;
+import za.co.capitec.coreapi.enums.Categories;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

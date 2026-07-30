@@ -2,15 +2,18 @@ package za.co.capitec.api_gateway.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import za.co.capitec.api_gateway.dto.accountsTransactions.AccTransactionResponse;
-import za.co.capitec.api_gateway.dto.loansTransactions.LoanTransaction;
+
+import za.co.capitec.coreapi.dtos.accounts.response.TransactionResponse;
+import za.co.capitec.coreapi.dtos.creditcards.response.CreditCardTransactionResponse;
+import za.co.capitec.coreapi.dtos.customer.records.CustomersRecord;
 
 @Data
 @AllArgsConstructor
 public class CustomerSummaryDto {
-    private CustomerDto customer;
-    private AccTransactionResponse accountsTransactions;
-    private LoanTransaction loansTransactions;
-    private CardsDto card;
+    private CustomersRecord customersRecord;
+    private TransactionResponse transactionResponse; //-- AccountTransactions to be exact
+    private CreditCardTransactionResponse creditCardTransactionResponse;
+
+    //TODO: Add the loan transactions
 
 }
