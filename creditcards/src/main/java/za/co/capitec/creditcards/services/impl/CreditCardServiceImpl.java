@@ -41,6 +41,7 @@ public class CreditCardServiceImpl implements ICreditCardService {
         //-- 2. Save the newly created credit card
         creditCard.setCardNumber(CreditCardUtils.generateCardNumber());
         creditCard.setAccountNumber(CreditCardUtils.generateAccNumber());
+        creditCard.setActiveSw(true);
         creditCardRepository.save(creditCard);
         //-- 3. Return the response
         return new ResponseDto(CreditCardsConstants.STATUS_201, CreditCardsConstants.MESSAGE_201);

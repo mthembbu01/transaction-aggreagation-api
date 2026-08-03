@@ -1,5 +1,8 @@
 package za.co.capitec.api_gateway.handler;
 
+/**
+ * API Composite Pattern - Below is a class that applies the API composite pattern for multiple API aggregation
+ */
 
 import org.springframework.lang.NonNull;
 import reactor.util.function.Tuple4;

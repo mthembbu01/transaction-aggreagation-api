@@ -26,7 +26,7 @@ public class Accounts extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AccountType accountType; // SAVINGS, CHEQUE, Transactional
 
-    private BigDecimal balance;
+    private BigDecimal balance = BigDecimal.ZERO;
     private String mobileNumber;
     private String idNumber;
     private String branchAddress;

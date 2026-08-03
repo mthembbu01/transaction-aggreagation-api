@@ -31,13 +31,14 @@ public class CreditCards extends BaseEntity {
     private CreditCardType cardType; // VISA, MASTERCARD, AMEX
     private String mobileNumber;
     private String idNumber;
-    private BigDecimal amount;
-    private BigDecimal creditLimit;
-    private BigDecimal availableCredit;
-    private BigDecimal outstandingBalance;
-    private BigDecimal minimumPayment;
+    private BigDecimal amount = BigDecimal.ZERO;
+    private BigDecimal creditLimit = BigDecimal.ZERO;
+    private BigDecimal availableCredit = BigDecimal.ZERO;
+    private BigDecimal outstandingBalance = BigDecimal.ZERO;
+    private BigDecimal minimumPayment = BigDecimal.ZERO;
     private LocalDate issueDate;
     private LocalDate expiryDate;
+
     private boolean activeSw;
 
     @Override

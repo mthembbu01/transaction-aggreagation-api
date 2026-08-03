@@ -3,6 +3,7 @@ package za.co.capitec.accounts.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import za.co.capitec.accounts.constants.AccountsConstants;
 import za.co.capitec.accounts.entity.Accounts;
 import za.co.capitec.accounts.repositories.AccountsRepository;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AccountsServiceImpl implements IAccountService {
 
     private final AccountsRepository accountsRepository;
@@ -41,7 +43,7 @@ public class AccountsServiceImpl implements IAccountService {
         isExist(accounts.getIdNumber(), accounts.getMobileNumber());
         //-- 2. Save the newly created account
         accounts.setAccountNumber(AccountUtils.generateAccNumber());
-        accounts.setActiveSw(Boolean.TRUE);
+        accounts.setActiveSw(true);
         accountsRepository.save(accounts);
         //-- 3. Return the response
         return new ResponseDto(AccountsConstants.MESSAGE_201, AccountsConstants.STATUS_201);

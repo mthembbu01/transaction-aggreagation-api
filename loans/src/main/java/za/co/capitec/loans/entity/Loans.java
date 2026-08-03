@@ -32,10 +32,10 @@ public class Loans extends BaseEntity {
 
     private String mobileNumber;
     private String idNumber;
-    private BigDecimal loanAmount;
-    private BigDecimal outstandingAmount;
-    private BigDecimal outstandingBalance;
-    private BigDecimal monthlyInstalment;
+    private BigDecimal loanAmount = BigDecimal.ZERO;
+    private BigDecimal outstandingAmount = BigDecimal.ZERO;
+    private BigDecimal outstandingBalance = BigDecimal.ZERO;
+    private BigDecimal monthlyInstalment = BigDecimal.ZERO;
     private LocalDate startDate;
     private LocalDate endDate;
 
