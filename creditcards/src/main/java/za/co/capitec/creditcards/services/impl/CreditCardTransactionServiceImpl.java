@@ -60,9 +60,11 @@ public class CreditCardTransactionServiceImpl implements ICCTransactionService {
     private ResponseDto creditAccount(CreditCards creditCard, BigDecimal amount, Categories categories, String description) {
         //-- 1. Credit the account
         //-- add the to the original amount
-        BigDecimal totalAmount = creditCard.getAmount().add(amount);
-        //-- 2. set the credit card balance
-        creditCard.setAmount(totalAmount);
+        BigDecimal newAmount = creditCard.getAmount().add(amount);
+        //-- 2. set the credit card attributes
+        creditCard.setAvailableCredit(newAmount);
+        creditCard.setAmount(newAmount);
+        creditCard.setOutstandingBalance(creditCard.getOutstandingBalance().subtract(amount));
         //-- 3. save the new balance amount
         ResponseDto responseDto = creditCardService.saveCreditCard(creditCard);
         //-- 4. Create a credit card transaction
@@ -81,12 +83,16 @@ public class CreditCardTransactionServiceImpl implements ICCTransactionService {
      */
     private ResponseDto debitAccount(CreditCards creditCard, BigDecimal amount, Categories transactionType, String description) {
         //-- 1. check for sufficient funds
-        if (creditCard.getAmount().compareTo(amount) < 0)
+        if (creditCard.getAvailableCredit().compareTo(amount) < 0)
             throw new InsufficientFundsException("Insufficient funds!");
         //-- 2. Subtract the amount from the total balance
         BigDecimal newAmount = creditCard.getAmount().subtract(amount);
-        //-- subtract the original amount
+        //-- set the corresponding
         creditCard.setAmount(newAmount);
+        creditCard.setAvailableCredit(newAmount);
+        creditCard.setOutstandingBalance(creditCard.getOutstandingBalance().add(amount));
+        BigDecimal outstandingBalance = creditCard.getOutstandingBalance();
+        creditCard.setMinimumPayment(creditCard.getMinimumPayment().add(outstandingBalance.multiply(BigDecimal.valueOf(0.075))));
         //-- 3. Save the new balance
         ResponseDto responseDto = creditCardService.saveCreditCard(creditCard);
         //-- 4. Create a transaction for the credit

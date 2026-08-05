@@ -4,6 +4,8 @@ package za.co.capitec.coreapi.dtos.accounts.records;
 import lombok.*;
 import za.co.capitec.coreapi.enums.accounts.AccountType;
 
+import java.math.BigDecimal;
+
 @Builder
 @Getter
 @Setter
@@ -12,6 +14,7 @@ import za.co.capitec.coreapi.enums.accounts.AccountType;
 public class AccountsRecord {
     private Long accountNumber;
     private AccountType accountType; // SAVINGS, CHEQUE, Transactional, Business
+    private BigDecimal balance;
     private String mobileNumber;
     private String idNumber;
     private String branchAddress;

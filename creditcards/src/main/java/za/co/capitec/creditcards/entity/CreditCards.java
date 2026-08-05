@@ -31,7 +31,7 @@ public class CreditCards extends BaseEntity {
     private CreditCardType cardType; // VISA, MASTERCARD, AMEX
     private String mobileNumber;
     private String idNumber;
-    private BigDecimal amount = BigDecimal.ZERO;
+    private BigDecimal amount = BigDecimal.ZERO; // credit card balance
     private BigDecimal creditLimit = BigDecimal.ZERO;
     private BigDecimal availableCredit = BigDecimal.ZERO;
     private BigDecimal outstandingBalance = BigDecimal.ZERO;

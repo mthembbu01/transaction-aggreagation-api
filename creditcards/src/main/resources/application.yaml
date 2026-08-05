@@ -1,6 +1,6 @@
 spring:
   application:
-    name: CREDITCARDS  # or creditcards, and ensure Gateway route uses correct case-insensitive lookup creditcards
+    name: CARDS  # or cards, and ensure Gateway route uses correct case-insensitive lookup cards
   threads:
     virtual:
       enabled: true

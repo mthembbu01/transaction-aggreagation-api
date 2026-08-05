@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import za.co.capitec.creditcards.enums.CreditCardType;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -22,7 +23,7 @@ public class CreateCreditCardDto {
     @Pattern(regexp = "^\\d{13}$", message = "Invalid ID Number")
     private String idNumber;
 
-    private Double creditLimit;
+    private BigDecimal creditLimit;
     private LocalDate issueDate;
     private LocalDate expiryDate;
     private boolean activeSw;
