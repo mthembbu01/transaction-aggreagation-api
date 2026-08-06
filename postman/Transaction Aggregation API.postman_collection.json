@@ -1,0 +1,2793 @@
+{
+  "info": {
+    "_postman_id": "8910bb2f-a216-4cb3-b5ae-5cbde33bb683",
+    "name": "Transaction Aggregation API",
+    "description": "Comprehensive Postman collection for the Transaction Aggregation API microservices.\n\n**Services:**\n- Accounts Service (port 8081)\n- Customer Service (port 8082)\n- Credit Cards Service (port 8083)\n- Loans Service (port 8084)\n- API Gateway (port 8071)\n- Eureka Server (port 8070)\n\nUse the `transaction-aggregation-api.local` environment for local development.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "6401672",
+    "_collection_link": "https://go.postman.co/collection/6401672-8910bb2f-a216-4cb3-b5ae-5cbde33bb683?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Accounts Service",
+      "item": [
+        {
+          "name": "Account CRUD",
+          "item": [
+            {
+              "name": "Get Account by Account Number",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/accounts/api/v1/{{account_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "accounts",
+                    "api",
+                    "v1",
+                    "{{account_number}}"
+                  ]
+                },
+                "description": "Find an account by its account number."
+              },
+              "response": [
+                {
+                  "name": "200 OK - Account Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/accounts/api/v1/{{account_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "accounts",
+                        "api",
+                        "v1",
+                        "{{account_number}}"
+                      ]
+                    },
+                    "description": "Find an account by its account number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"accountNumber\": 1001,\n  \"accountType\": \"SAVINGS\",\n  \"mobileNumber\": \"0821234567\",\n  \"idNumber\": \"9001015009087\",\n  \"branchAddress\": \"123 Main Street, Cape Town\",\n  \"availableBalance\": 5000.00,\n  \"activeSw\": true\n}"
+                }
+              ]
+            },
+            {
+              "name": "Get Accounts by ID Number",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Parse the JSON response",
+                      "const accounts = pm.response.json();",
+                      "",
+                      "if (accounts && accounts.accountNumber) {",
+                      "    // Save it as a collection variable",
+                      "    pm.collectionVariables.set(\"account_number\", accounts.accountNumber);",
+                      "    console.log(\"Captured Account Number: \", accounts.accountNumber);",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/accounts/api/v1/accounts?idNumber={{id_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "accounts",
+                    "api",
+                    "v1",
+                    "accounts"
+                  ],
+                  "query": [
+                    {
+                      "key": "idNumber",
+                      "value": "{{id_number}}",
+                      "description": "13-digit South African ID Number"
+                    }
+                  ]
+                },
+                "description": "Find all accounts associated with a customer ID number. ID number must be a 13-digit string."
+              },
+              "response": [
+                {
+                  "name": "200 OK - Accounts Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/accounts/api/v1/accounts?idNumber={{id_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "accounts",
+                        "api",
+                        "v1",
+                        "accounts"
+                      ],
+                      "query": [
+                        {
+                          "key": "idNumber",
+                          "value": "{{id_number}}",
+                          "description": "13-digit South African ID Number"
+                        }
+                      ]
+                    },
+                    "description": "Find all accounts associated with a customer ID number. ID number must be a 13-digit string."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n  {\n    \"accountNumber\": 1001,\n    \"accountType\": \"SAVINGS\",\n    \"mobileNumber\": \"0821234567\",\n    \"idNumber\": \"9001015009087\",\n    \"branchAddress\": \"123 Main Street, Cape Town\",\n    \"availableBalance\": 5000.00,\n    \"activeSw\": true\n  },\n  {\n    \"accountNumber\": 1002,\n    \"accountType\": \"CURRENT\",\n    \"mobileNumber\": \"0821234567\",\n    \"idNumber\": \"9001015009087\",\n    \"branchAddress\": \"123 Main Street, Cape Town\",\n    \"availableBalance\": 12000.00,\n    \"activeSw\": true\n  }\n]"
+                }
+              ]
+            },
+            {
+              "name": "Create Account",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const accounts = pm.response.json();",
+                      "if (accounts && accounts.accountNumber) {",
+                      "    // Save it as a collection variable",
+                      "    pm.collectionVariables.set(\"account_number\", accounts.accountNumber);",
+                      "    console.log(\"Captured Account Number: \", accounts.accountNumber);",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountType\": \"SAVINGS\",\n  \"mobileNumber\": \"0821234567\",\n  \"idNumber\": {{id_number}},\n  \"branchAddress\": \"123 Main Street, Cape Town\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/accounts/api/v1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "accounts",
+                    "api",
+                    "v1"
+                  ]
+                },
+                "description": "Create a new bank account. Account types include SAVINGS, CURRENT."
+              },
+              "response": [
+                {
+                  "name": "201 Created",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"accountType\": \"SAVINGS\",\n  \"mobileNumber\": \"0821234567\",\n  \"idNumber\": {{id_number}},\n  \"branchAddress\": \"123 Main Street, Cape Town\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/accounts/api/v1",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "accounts",
+                        "api",
+                        "v1"
+                      ]
+                    },
+                    "description": "Create a new bank account. Account types include SAVINGS, CURRENT."
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"201\",\n  \"statusMsg\": \"Account created successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Update Account (Full)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mobileNumber\": \"0829876543\",\n  \"idNumber\": \"9001015009087\",\n  \"branchAddress\": \"456 New Street, Johannesburg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/accounts/api/v1/{{account_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "accounts",
+                    "api",
+                    "v1",
+                    "{{account_number}}"
+                  ]
+                },
+                "description": "Fully update an account by account number."
+              },
+              "response": [
+                {
+                  "name": "200 OK",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mobileNumber\": \"0829876543\",\n  \"idNumber\": \"9001015009087\",\n  \"branchAddress\": \"456 New Street, Johannesburg\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/accounts/api/v1/{{account_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "accounts",
+                        "api",
+                        "v1",
+                        "{{account_number}}"
+                      ]
+                    },
+                    "description": "Fully update an account by account number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Account updated successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Patch Account (Partial)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mobileNumber\": \"0829876543\",\n  \"branchAddress\": \"456 New Street, Johannesburg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/accounts/api/v1/{{account_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "accounts",
+                    "api",
+                    "v1",
+                    "{{account_number}}"
+                  ]
+                },
+                "description": "Partially update an account by account number."
+              },
+              "response": [
+                {
+                  "name": "200 OK",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mobileNumber\": \"0829876543\",\n  \"branchAddress\": \"456 New Street, Johannesburg\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/accounts/api/v1/{{account_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "accounts",
+                        "api",
+                        "v1",
+                        "{{account_number}}"
+                      ]
+                    },
+                    "description": "Partially update an account by account number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Account patched successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete Account",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/accounts/api/v1/{{account_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "accounts",
+                    "api",
+                    "v1",
+                    "{{account_number}}"
+                  ]
+                },
+                "description": "Delete an account by account number."
+              },
+              "response": [
+                {
+                  "name": "204 No Content",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/accounts/api/v1/{{account_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "accounts",
+                        "api",
+                        "v1",
+                        "{{account_number}}"
+                      ]
+                    },
+                    "description": "Delete an account by account number."
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "Text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Account Transactions",
+          "item": [
+            {
+              "name": "Create Account Transaction",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": {{account_number}},\n  \"description\": \"Deposit\",\n  \"amount\": 5000.00,\n  \"isImmediate\": true,\n  \"category\": \"CREDIT\",\n  \"reference\": \"TXN-REF-001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/accounts/api/v1/transaction",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "accounts",
+                    "api",
+                    "v1",
+                    "transaction"
+                  ]
+                },
+                "description": "Post a debit/credit transaction to an account.\n\n**Categories:** FOOD, TRANSPORT, SHOPPING, UTILITIES, INSURANCE, MEDICAL, SALARY, TRANSFER, UNKNOWN, CREDIT, DEBIT, DEPOSIT, WITHDRAWAL, INTEREST, FEE, CURRENT, SAVINGS"
+              },
+              "response": [
+                {
+                  "name": "200 OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"accountNumber\": {{account_number}},\n  \"description\": \"Deposit\",\n  \"amount\": 5000.00,\n  \"isImmediate\": true,\n  \"category\": \"CREDIT\",\n  \"reference\": \"TXN-REF-001\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/accounts/api/v1/transaction",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "accounts",
+                        "api",
+                        "v1",
+                        "transaction"
+                      ]
+                    },
+                    "description": "Post a debit/credit transaction to an account.\n\n**Categories:** FOOD, TRANSPORT, SHOPPING, UTILITIES, INSURANCE, MEDICAL, SALARY, TRANSFER, UNKNOWN, CREDIT, DEBIT, DEPOSIT, WITHDRAWAL, INTEREST, FEE, CURRENT, SAVINGS"
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Transaction processed successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Get Account Transactions (Statement)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/accounts/api/v1/transaction/{{id_number}}/{{start_date}}/{{end_date}}?pageNo=0&pageSize=10&sortBy=date&sortDir=desc",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "accounts",
+                    "api",
+                    "v1",
+                    "transaction",
+                    "{{id_number}}",
+                    "{{start_date}}",
+                    "{{end_date}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageNo",
+                      "value": "0",
+                      "description": "Page number (0-based)"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10",
+                      "description": "Number of records per page"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "date",
+                      "description": "Field to sort by"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "desc",
+                      "description": "Sort direction: asc or desc"
+                    }
+                  ]
+                },
+                "description": "Retrieve paginated account transactions (bank statement) for a customer between a date range.\n\n**Date format:** YYYY-MM-DD"
+              },
+              "response": [
+                {
+                  "name": "200 OK - Paginated Transactions",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/accounts/api/v1/transaction/{{id_number}}/{{start_date}}/{{end_date}}?pageNo=0&pageSize=10&sortBy=date&sortDir=desc",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "accounts",
+                        "api",
+                        "v1",
+                        "transaction",
+                        "{{id_number}}",
+                        "{{start_date}}",
+                        "{{end_date}}"
+                      ],
+                      "query": [
+                        {
+                          "key": "pageNo",
+                          "value": "0",
+                          "description": "Page number (0-based)"
+                        },
+                        {
+                          "key": "pageSize",
+                          "value": "10",
+                          "description": "Number of records per page"
+                        },
+                        {
+                          "key": "sortBy",
+                          "value": "date",
+                          "description": "Field to sort by"
+                        },
+                        {
+                          "key": "sortDir",
+                          "value": "desc",
+                          "description": "Sort direction: asc or desc"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve paginated account transactions (bank statement) for a customer between a date range.\n\n**Date format:** YYYY-MM-DD"
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"content\": [\n    {\n      \"transactionId\": 1,\n      \"accountNumber\": 1001,\n      \"description\": \"Grocery shopping at Pick n Pay\",\n      \"amount\": 350.00,\n      \"category\": \"FOOD\",\n      \"reference\": \"TXN-REF-001\",\n      \"date\": \"2024-01-15\"\n    }\n  ],\n  \"pageNo\": 0,\n  \"pageSize\": 10,\n  \"totalPages\": 1,\n  \"totalElements\": 1,\n  \"isLast\": true\n}"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "description": "Endpoints for the Accounts microservice running on port 8081"
+    },
+    {
+      "name": "Customer Service",
+      "item": [
+        {
+          "name": "Get Customer by ID Number",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/capitec/customers/api/v1/{{id_number}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "capitec",
+                "customers",
+                "api",
+                "v1",
+                "{{id_number}}"
+              ]
+            },
+            "description": "Find a customer by their 13-digit South African ID number."
+          },
+          "response": [
+            {
+              "name": "200 OK - Customer Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/customers/api/v1/{{id_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "customers",
+                    "api",
+                    "v1",
+                    "{{id_number}}"
+                  ]
+                },
+                "description": "Find a customer by their 13-digit South African ID number."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"idNumber\": \"9001015009087\",\n  \"firstname\": \"John\",\n  \"lastName\": \"Doe\",\n  \"address\": \"123 Main Street, Cape Town, 8001\",\n  \"email\": \"john.doe@example.com\",\n  \"mobileNumber\": \"0821234567\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Customers (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/capitec/customers/api/v1/customers?pageNo=0&pageSize=10&sortBy=lastName&sortDir=asc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "capitec",
+                "customers",
+                "api",
+                "v1",
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "pageNo",
+                  "value": "0",
+                  "description": "Page number (0-based)"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10",
+                  "description": "Number of records per page"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "lastName",
+                  "description": "Field to sort by (e.g., lastName, firstname)"
+                },
+                {
+                  "key": "sortDir",
+                  "value": "asc",
+                  "description": "Sort direction: asc or desc"
+                }
+              ]
+            },
+            "description": "Retrieve a paginated list of all customers."
+          },
+          "response": [
+            {
+              "name": "200 OK - Paginated Customers",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/customers/api/v1/customers?pageNo=0&pageSize=10&sortBy=lastName&sortDir=asc",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "customers",
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageNo",
+                      "value": "0",
+                      "description": "Page number (0-based)"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10",
+                      "description": "Number of records per page"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "lastName",
+                      "description": "Field to sort by (e.g., lastName, firstname)"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "asc",
+                      "description": "Sort direction: asc or desc"
+                    }
+                  ]
+                },
+                "description": "Retrieve a paginated list of all customers."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"content\": [\n    {\n      \"idNumber\": \"9001015009087\",\n      \"firstname\": \"John\",\n      \"lastName\": \"Doe\",\n      \"address\": \"123 Main Street, Cape Town, 8001\",\n      \"email\": \"john.doe@example.com\",\n      \"mobileNumber\": \"0821234567\"\n    }\n  ],\n  \"pageNo\": 0,\n  \"pageSize\": 10,\n  \"totalPages\": 1,\n  \"totalElements\": 1,\n  \"isLast\": true\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstname\": \"John\",\n  \"lastName\": \"Doe\",\n  \"address\": \"123 Main Street, Cape Town, 8001\",\n  \"email\": \"john.doe8@example.com\",\n  \"mobileNumber\": \"0821234568\",\n  \"idNumber\": \"9001015009088\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/capitec/customers/api/v1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "capitec",
+                "customers",
+                "api",
+                "v1"
+              ]
+            },
+            "description": "Register a new customer.\n\n**Validation rules:**\n- email: must be a valid email format\n- mobileNumber: SA format (+27 or 0 prefix, 9 digits after)\n- idNumber: must be exactly 13 digits"
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"firstname\": \"John\",\n  \"lastName\": \"Doe\",\n  \"address\": \"123 Main Street, Cape Town, 8001\",\n  \"email\": \"john.doe8@example.com\",\n  \"mobileNumber\": \"0821234568\",\n  \"idNumber\": \"9001015009088\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/customers/api/v1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "customers",
+                    "api",
+                    "v1"
+                  ]
+                },
+                "description": "Register a new customer.\n\n**Validation rules:**\n- email: must be a valid email format\n- mobileNumber: SA format (+27 or 0 prefix, 9 digits after)\n- idNumber: must be exactly 13 digits"
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"statusCode\": \"201\",\n  \"statusMsg\": \"Customer created successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Customer (Full)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstname\": \"John\",\n  \"lastName\": \"Doe\",\n  \"address\": \"456 New Avenue, Johannesburg, 2000\",\n  \"email\": \"john.doe.updated@example.com\",\n  \"mobileNumber\": \"0829876543\",\n  \"idNumber\": \"9001015009087\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/capitec/customers/api/v1/{{id_number}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "capitec",
+                "customers",
+                "api",
+                "v1",
+                "{{id_number}}"
+              ]
+            },
+            "description": "Fully update a customer record by ID number."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"firstname\": \"John\",\n  \"lastName\": \"Doe\",\n  \"address\": \"456 New Avenue, Johannesburg, 2000\",\n  \"email\": \"john.doe.updated@example.com\",\n  \"mobileNumber\": \"0829876543\",\n  \"idNumber\": \"9001015009087\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/customers/api/v1/{{id_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "customers",
+                    "api",
+                    "v1",
+                    "{{id_number}}"
+                  ]
+                },
+                "description": "Fully update a customer record by ID number."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Customer updated successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Patch Customer (Partial)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": \"456 New Avenue, Johannesburg, 2000\",\n  \"mobileNumber\": \"0829876543\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/capitec/customers/api/v1/{{id_number}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "capitec",
+                "customers",
+                "api",
+                "v1",
+                "{{id_number}}"
+              ]
+            },
+            "description": "Partially update a customer record by ID number."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"456 New Avenue, Johannesburg, 2000\",\n  \"mobileNumber\": \"0829876543\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/customers/api/v1/{{id_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "customers",
+                    "api",
+                    "v1",
+                    "{{id_number}}"
+                  ]
+                },
+                "description": "Partially update a customer record by ID number."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Customer patched successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Customer",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/capitec/customers/api/v1/{{id_number}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "capitec",
+                "customers",
+                "api",
+                "v1",
+                "{{id_number}}"
+              ]
+            },
+            "description": "Delete a customer by their ID number."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/customers/api/v1/{{id_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "customers",
+                    "api",
+                    "v1",
+                    "{{id_number}}"
+                  ]
+                },
+                "description": "Delete a customer by their ID number."
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Customer deleted successfully\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Endpoints for the Customer microservice running on port 8082"
+    },
+    {
+      "name": "Credit Cards Service",
+      "item": [
+        {
+          "name": "Credit Card CRUD",
+          "item": [
+            {
+              "name": "Get Credit Card by Card Number",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/cards/api/v1/{{card_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "cards",
+                    "api",
+                    "v1",
+                    "{{card_number}}"
+                  ]
+                },
+                "description": "Find a credit card by its card number."
+              },
+              "response": [
+                {
+                  "name": "200 OK - Credit Card Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/cards/api/v1/{{card_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "cards",
+                        "api",
+                        "v1",
+                        "{{card_number}}"
+                      ]
+                    },
+                    "description": "Find a credit card by its card number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"cardNumber\": 4000123456789010,\n  \"cardType\": \"VISA\",\n  \"mobileNumber\": \"0821234567\",\n  \"idNumber\": \"9001015009087\",\n  \"creditLimit\": 50000.00,\n  \"issueDate\": \"2023-01-01\",\n  \"expiryDate\": \"2026-01-01\",\n  \"activeSw\": true\n}"
+                }
+              ]
+            },
+            {
+              "name": "Get Credit Cards by ID Number",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/cards/api/v1/creditcards?idNumber={{id_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "cards",
+                    "api",
+                    "v1",
+                    "creditcards"
+                  ],
+                  "query": [
+                    {
+                      "key": "idNumber",
+                      "value": "{{id_number}}",
+                      "description": "13-digit South African ID Number"
+                    }
+                  ]
+                },
+                "description": "Find all credit cards associated with a customer ID number."
+              },
+              "response": [
+                {
+                  "name": "200 OK - Credit Cards Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/cards/api/v1/creditcards?idNumber={{id_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "cards",
+                        "api",
+                        "v1",
+                        "creditcards"
+                      ],
+                      "query": [
+                        {
+                          "key": "idNumber",
+                          "value": "{{id_number}}",
+                          "description": "13-digit South African ID Number"
+                        }
+                      ]
+                    },
+                    "description": "Find all credit cards associated with a customer ID number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n  {\n    \"cardNumber\": 4000123456789010,\n    \"cardType\": \"VISA\",\n    \"mobileNumber\": \"0821234567\",\n    \"idNumber\": \"9001015009087\",\n    \"creditLimit\": 50000.00,\n    \"issueDate\": \"2023-01-01\",\n    \"expiryDate\": \"2026-01-01\",\n    \"activeSw\": true\n  }\n]"
+                }
+              ]
+            },
+            {
+              "name": "Create Credit Card",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cardType\": \"VISA\",\n  \"mobileNumber\": \"0821234567\",\n  \"idNumber\": \"9001015009087\",\n  \"creditLimit\": 50000.00,\n  \"issueDate\": \"2024-01-01\",\n  \"expiryDate\": \"2027-01-01\",\n  \"activeSw\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/cards/api/v1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "cards",
+                    "api",
+                    "v1"
+                  ]
+                },
+                "description": "Create a new credit card for a customer.\n\n**Card Types:** VISA, MASTERCARD, AMEX"
+              },
+              "response": [
+                {
+                  "name": "201 Created",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cardType\": \"VISA\",\n  \"mobileNumber\": \"0821234567\",\n  \"idNumber\": \"9001015009087\",\n  \"creditLimit\": 50000.00,\n  \"issueDate\": \"2024-01-01\",\n  \"expiryDate\": \"2027-01-01\",\n  \"activeSw\": true\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/cards/api/v1",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "cards",
+                        "api",
+                        "v1"
+                      ]
+                    },
+                    "description": "Create a new credit card for a customer.\n\n**Card Types:** VISA, MASTERCARD, AMEX"
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"201\",\n  \"statusMsg\": \"Credit card created successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Update Credit Card (Full)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mobileNumber\": \"0829876543\",\n  \"idNumber\": \"9001015009087\",\n  \"creditLimit\": 75000.00,\n  \"expiryDate\": \"2028-01-01\",\n  \"activeSw\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/cards/api/v1/{{card_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "cards",
+                    "api",
+                    "v1",
+                    "{{card_number}}"
+                  ]
+                },
+                "description": "Fully update a credit card by card number."
+              },
+              "response": [
+                {
+                  "name": "200 OK",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mobileNumber\": \"0829876543\",\n  \"idNumber\": \"9001015009087\",\n  \"creditLimit\": 75000.00,\n  \"expiryDate\": \"2028-01-01\",\n  \"activeSw\": true\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/cards/api/v1/{{card_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "cards",
+                        "api",
+                        "v1",
+                        "{{card_number}}"
+                      ]
+                    },
+                    "description": "Fully update a credit card by card number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Credit card updated successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Patch Credit Card (Partial)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"creditLimit\": 75000.00,\n  \"expiryDate\": \"2028-01-01\",\n  \"activeSw\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/cards/api/v1/{{card_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "cards",
+                    "api",
+                    "v1",
+                    "{{card_number}}"
+                  ]
+                },
+                "description": "Partially update a credit card by card number."
+              },
+              "response": [
+                {
+                  "name": "200 OK",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"creditLimit\": 75000.00,\n  \"expiryDate\": \"2028-01-01\",\n  \"activeSw\": true\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/cards/api/v1/{{card_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "cards",
+                        "api",
+                        "v1",
+                        "{{card_number}}"
+                      ]
+                    },
+                    "description": "Partially update a credit card by card number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Credit card patched successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete Credit Card",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/cards/api/v1/{{card_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "cards",
+                    "api",
+                    "v1",
+                    "{{card_number}}"
+                  ]
+                },
+                "description": "Delete a credit card by card number."
+              },
+              "response": [
+                {
+                  "name": "200 OK",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/cards/api/v1/{{card_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "cards",
+                        "api",
+                        "v1",
+                        "{{card_number}}"
+                      ]
+                    },
+                    "description": "Delete a credit card by card number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Credit card deleted successfully\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Credit Card Transactions",
+          "item": [
+            {
+              "name": "Create Credit Card Transaction",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cardNumber\": 28361627085572656,\n  \"description\": \"Online purchase - Amazon\",\n  \"amount\": 1700.01,\n  \"timestamp\": \"2024-01-15\",\n  \"category\": \"SHOPPING\",\n  \"reference\": \"CC-TXN-REF-001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/cards/api/v1/transaction",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "cards",
+                    "api",
+                    "v1",
+                    "transaction"
+                  ]
+                },
+                "description": "Post a transaction to a credit card.\n\n**Categories:** FOOD, TRANSPORT, SHOPPING, UTILITIES, INSURANCE, MEDICAL, SALARY, TRANSFER, UNKNOWN, CREDIT, DEBIT, DEPOSIT, WITHDRAWAL, INTEREST, FEE, CURRENT, SAVINGS"
+              },
+              "response": [
+                {
+                  "name": "200 OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"cardNumber\": 28361627085572656,\n  \"description\": \"Online purchase - Amazon\",\n  \"amount\": 1700.01,\n  \"timestamp\": \"2024-01-15\",\n  \"category\": \"SHOPPING\",\n  \"reference\": \"CC-TXN-REF-001\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/cards/api/v1/transaction",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "cards",
+                        "api",
+                        "v1",
+                        "transaction"
+                      ]
+                    },
+                    "description": "Post a transaction to a credit card.\n\n**Categories:** FOOD, TRANSPORT, SHOPPING, UTILITIES, INSURANCE, MEDICAL, SALARY, TRANSFER, UNKNOWN, CREDIT, DEBIT, DEPOSIT, WITHDRAWAL, INTEREST, FEE, CURRENT, SAVINGS"
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Transaction processed successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Get Credit Card Transactions (Statement)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/cards/api/v1/transaction/{{id_number}}/{{start_date}}/{{end_date}}?pageNo=0&pageSize=10&sortBy=date&sortDir=desc",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "cards",
+                    "api",
+                    "v1",
+                    "transaction",
+                    "{{id_number}}",
+                    "{{start_date}}",
+                    "{{end_date}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageNo",
+                      "value": "0",
+                      "description": "Page number (0-based)"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10",
+                      "description": "Number of records per page"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "date",
+                      "description": "Field to sort by"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "desc",
+                      "description": "Sort direction: asc or desc"
+                    }
+                  ]
+                },
+                "description": "Retrieve paginated credit card transactions for a customer between a date range.\n\n**Date format:** YYYY-MM-DD"
+              },
+              "response": [
+                {
+                  "name": "200 OK - Paginated Transactions",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/cards/api/v1/transaction/{{id_number}}/{{start_date}}/{{end_date}}?pageNo=0&pageSize=10&sortBy=date&sortDir=desc",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "cards",
+                        "api",
+                        "v1",
+                        "transaction",
+                        "{{id_number}}",
+                        "{{start_date}}",
+                        "{{end_date}}"
+                      ],
+                      "query": [
+                        {
+                          "key": "pageNo",
+                          "value": "0",
+                          "description": "Page number (0-based)"
+                        },
+                        {
+                          "key": "pageSize",
+                          "value": "10",
+                          "description": "Number of records per page"
+                        },
+                        {
+                          "key": "sortBy",
+                          "value": "date",
+                          "description": "Field to sort by"
+                        },
+                        {
+                          "key": "sortDir",
+                          "value": "desc",
+                          "description": "Sort direction: asc or desc"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve paginated credit card transactions for a customer between a date range.\n\n**Date format:** YYYY-MM-DD"
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"content\": [\n    {\n      \"transactionId\": 1,\n      \"cardNumber\": 4000123456789010,\n      \"description\": \"Online purchase - Amazon\",\n      \"amount\": 1299.99,\n      \"category\": \"SHOPPING\",\n      \"reference\": \"CC-TXN-REF-001\",\n      \"timestamp\": \"2024-01-15\"\n    }\n  ],\n  \"pageNo\": 0,\n  \"pageSize\": 10,\n  \"totalPages\": 1,\n  \"totalElements\": 1,\n  \"isLast\": true\n}"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "description": "Endpoints for the Credit Cards microservice running on port 8083"
+    },
+    {
+      "name": "Loans Service",
+      "item": [
+        {
+          "name": "Loan CRUD",
+          "item": [
+            {
+              "name": "Get Loan by Loan Number",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/loans/api/v1/{{loan_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "loans",
+                    "api",
+                    "v1",
+                    "{{loan_number}}"
+                  ]
+                },
+                "description": "Find a loan by its loan number."
+              },
+              "response": [
+                {
+                  "name": "200 OK - Loan Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/loans/api/v1/{{loan_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "loans",
+                        "api",
+                        "v1",
+                        "{{loan_number}}"
+                      ]
+                    },
+                    "description": "Find a loan by its loan number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"loanNumber\": 2001,\n  \"loanType\": \"PERSONAL\",\n  \"mobileNumber\": \"0821234567\",\n  \"idNumber\": \"9001015009087\",\n  \"loanAmount\": 100000.00,\n  \"monthlyInstalment\": 2500.00,\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": \"2028-01-01\",\n  \"activeSw\": true\n}"
+                }
+              ]
+            },
+            {
+              "name": "Get Loans by ID Number",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/loans/api/v1/loans?idNumber={{id_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "loans",
+                    "api",
+                    "v1",
+                    "loans"
+                  ],
+                  "query": [
+                    {
+                      "key": "idNumber",
+                      "value": "{{id_number}}",
+                      "description": "13-digit South African ID Number"
+                    }
+                  ]
+                },
+                "description": "Find all loans associated with a customer ID number."
+              },
+              "response": [
+                {
+                  "name": "200 OK - Loans Found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/loans/api/v1/loans?idNumber={{id_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "loans",
+                        "api",
+                        "v1",
+                        "loans"
+                      ],
+                      "query": [
+                        {
+                          "key": "idNumber",
+                          "value": "{{id_number}}",
+                          "description": "13-digit South African ID Number"
+                        }
+                      ]
+                    },
+                    "description": "Find all loans associated with a customer ID number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n  {\n    \"loanNumber\": 2001,\n    \"loanType\": \"PERSONAL\",\n    \"mobileNumber\": \"0821234567\",\n    \"idNumber\": \"9001015009087\",\n    \"loanAmount\": 100000.00,\n    \"monthlyInstalment\": 2500.00,\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2028-01-01\",\n    \"activeSw\": true\n  },\n  {\n    \"loanNumber\": 2002,\n    \"loanType\": \"VEHICLE\",\n    \"mobileNumber\": \"0821234567\",\n    \"idNumber\": \"9001015009087\",\n    \"loanAmount\": 250000.00,\n    \"monthlyInstalment\": 5500.00,\n    \"startDate\": \"2023-06-01\",\n    \"endDate\": \"2028-06-01\",\n    \"activeSw\": true\n  }\n]"
+                }
+              ]
+            },
+            {
+              "name": "Create Loan",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"loanType\": \"PERSONAL\",\n  \"mobileNumber\": \"0821234567\",\n  \"idNumber\": \"9001015009087\",\n  \"loanAmount\": 10000.00,\n  \"monthlyInstalment\": 500.00,\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": \"2028-01-01\",\n  \"activeSw\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/loans/api/v1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "loans",
+                    "api",
+                    "v1"
+                  ]
+                },
+                "description": "Create a new loan for a customer.\n\n**Loan Types:** PERSONAL, HOME, VEHICLE, BUSINESS, STUDENT"
+              },
+              "response": [
+                {
+                  "name": "201 Created",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"loanType\": \"PERSONAL\",\n  \"mobileNumber\": \"0821234567\",\n  \"idNumber\": \"9001015009087\",\n  \"loanAmount\": 10000.00,\n  \"monthlyInstalment\": 500.00,\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": \"2028-01-01\",\n  \"activeSw\": true\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/loans/api/v1",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "loans",
+                        "api",
+                        "v1"
+                      ]
+                    },
+                    "description": "Create a new loan for a customer.\n\n**Loan Types:** PERSONAL, HOME, VEHICLE, BUSINESS, STUDENT"
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"201\",\n  \"statusMsg\": \"Loan created successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Update Loan (Full)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mobileNumber\": \"0829876543\",\n  \"idNumber\": \"9001015009087\",\n  \"loanAmount\": 120000.00,\n  \"monthlyInstalment\": 3000.00,\n  \"endDate\": \"2029-01-01\",\n  \"status\": \"ACTIVE\",\n  \"activeSw\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/loans/api/v1/{{loan_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "loans",
+                    "api",
+                    "v1",
+                    "{{loan_number}}"
+                  ]
+                },
+                "description": "Fully update a loan by loan number."
+              },
+              "response": [
+                {
+                  "name": "200 OK",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"mobileNumber\": \"0829876543\",\n  \"idNumber\": \"9001015009087\",\n  \"loanAmount\": 120000.00,\n  \"monthlyInstalment\": 3000.00,\n  \"endDate\": \"2029-01-01\",\n  \"status\": \"ACTIVE\",\n  \"activeSw\": true\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/loans/api/v1/{{loan_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "loans",
+                        "api",
+                        "v1",
+                        "{{loan_number}}"
+                      ]
+                    },
+                    "description": "Fully update a loan by loan number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Loan updated successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Patch Loan (Partial)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"loanAmount\": 120000.00,\n  \"monthlyInstalment\": 3000.00,\n  \"endDate\": \"2029-01-01\",\n  \"activeSw\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/loans/api/v1/{{loan_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "loans",
+                    "api",
+                    "v1",
+                    "{{loan_number}}"
+                  ]
+                },
+                "description": "Partially update a loan by loan number."
+              },
+              "response": [
+                {
+                  "name": "200 OK",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"loanAmount\": 120000.00,\n  \"monthlyInstalment\": 3000.00,\n  \"endDate\": \"2029-01-01\",\n  \"activeSw\": true\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/loans/api/v1/{{loan_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "loans",
+                        "api",
+                        "v1",
+                        "{{loan_number}}"
+                      ]
+                    },
+                    "description": "Partially update a loan by loan number."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Loan patched successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete Loan",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/loans/api/v1/{{loan_number}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "loans",
+                    "api",
+                    "v1",
+                    "{{loan_number}}"
+                  ]
+                },
+                "description": "Delete a loan by loan number."
+              },
+              "response": [
+                {
+                  "name": "204 No Content",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/loans/api/v1/{{loan_number}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "loans",
+                        "api",
+                        "v1",
+                        "{{loan_number}}"
+                      ]
+                    },
+                    "description": "Delete a loan by loan number."
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "Text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Loan Transactions",
+          "item": [
+            {
+              "name": "Create Loan Transaction",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"loanNumber\": {{loan_number}},\n  \"description\": \"Monthly loan repayment\",\n  \"amount\": 2500.00,\n  \"isImmediate\": false,\n  \"timestamp\": \"2024-01-31\",\n  \"category\": \"CREDIT\",\n  \"reference\": \"LOAN-TXN-REF-001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/capitec/loans/api/v1/transaction",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "loans",
+                    "api",
+                    "v1",
+                    "transaction"
+                  ]
+                },
+                "description": "Post a transaction (repayment/disbursement) to a loan.\n\n**Categories:** FOOD, TRANSPORT, SHOPPING, UTILITIES, INSURANCE, MEDICAL, SALARY, TRANSFER, UNKNOWN, CREDIT, DEBIT, DEPOSIT, WITHDRAWAL, INTEREST, FEE, CURRENT, SAVINGS"
+              },
+              "response": [
+                {
+                  "name": "200 OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"loanNumber\": {{loan_number}},\n  \"description\": \"Monthly loan repayment\",\n  \"amount\": 2500.00,\n  \"isImmediate\": false,\n  \"timestamp\": \"2024-01-31\",\n  \"category\": \"CREDIT\",\n  \"reference\": \"LOAN-TXN-REF-001\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/capitec/loans/api/v1/transaction",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "loans",
+                        "api",
+                        "v1",
+                        "transaction"
+                      ]
+                    },
+                    "description": "Post a transaction (repayment/disbursement) to a loan.\n\n**Categories:** FOOD, TRANSPORT, SHOPPING, UTILITIES, INSURANCE, MEDICAL, SALARY, TRANSFER, UNKNOWN, CREDIT, DEBIT, DEPOSIT, WITHDRAWAL, INTEREST, FEE, CURRENT, SAVINGS"
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"statusCode\": \"200\",\n  \"statusMsg\": \"Loan transaction processed successfully\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Get Loan Transactions (Statement)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/capitec/loans/api/v1/transaction/{{id_number}}/{{start_date}}/{{end_date}}?pageNo=0&pageSize=10&sortBy=date&sortDir=desc",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "capitec",
+                    "loans",
+                    "api",
+                    "v1",
+                    "transaction",
+                    "{{id_number}}",
+                    "{{start_date}}",
+                    "{{end_date}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageNo",
+                      "value": "0",
+                      "description": "Page number (0-based)"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "10",
+                      "description": "Number of records per page"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "date",
+                      "description": "Field to sort by"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "desc",
+                      "description": "Sort direction: asc or desc"
+                    }
+                  ]
+                },
+                "description": "Retrieve paginated loan transactions for a customer between a date range.\n\n**Date format:** YYYY-MM-DD"
+              },
+              "response": [
+                {
+                  "name": "200 OK - Paginated Transactions",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/capitec/loans/api/v1/transaction/{{id_number}}/{{start_date}}/{{end_date}}?pageNo=0&pageSize=10&sortBy=date&sortDir=desc",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "capitec",
+                        "loans",
+                        "api",
+                        "v1",
+                        "transaction",
+                        "{{id_number}}",
+                        "{{start_date}}",
+                        "{{end_date}}"
+                      ],
+                      "query": [
+                        {
+                          "key": "pageNo",
+                          "value": "0",
+                          "description": "Page number (0-based)"
+                        },
+                        {
+                          "key": "pageSize",
+                          "value": "10",
+                          "description": "Number of records per page"
+                        },
+                        {
+                          "key": "sortBy",
+                          "value": "date",
+                          "description": "Field to sort by"
+                        },
+                        {
+                          "key": "sortDir",
+                          "value": "desc",
+                          "description": "Sort direction: asc or desc"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve paginated loan transactions for a customer between a date range.\n\n**Date format:** YYYY-MM-DD"
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"content\": [\n    {\n      \"transactionId\": 1,\n      \"loanNumber\": 2001,\n      \"description\": \"Monthly loan repayment\",\n      \"amount\": 2500.00,\n      \"category\": \"TRANSFER\",\n      \"reference\": \"LOAN-TXN-REF-001\",\n      \"timestamp\": \"2024-01-31\"\n    }\n  ],\n  \"pageNo\": 0,\n  \"pageSize\": 10,\n  \"totalPages\": 1,\n  \"totalElements\": 1,\n  \"isLast\": true\n}"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "description": "Endpoints for the Loans microservice running on port 8084"
+    },
+    {
+      "name": "API Gateway",
+      "item": [
+        {
+          "name": "Composite - Get Customer Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/composite/customersummary?idNumber={{id_number}}&startDate={{start_date}}&endDate={{end_date}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "composite",
+                "customersummary"
+              ],
+              "query": [
+                {
+                  "key": "idNumber",
+                  "value": "{{id_number}}",
+                  "description": "13-digit South African ID Number"
+                },
+                {
+                  "key": "startDate",
+                  "value": "{{start_date}}",
+                  "description": "Start date in YYYY-MM-DD format"
+                },
+                {
+                  "key": "endDate",
+                  "value": "{{end_date}}",
+                  "description": "End date in YYYY-MM-DD format"
+                }
+              ]
+            },
+            "description": "Aggregated composite endpoint that fetches a full customer summary including:\n- Customer profile details\n- All account transactions within the date range\n- All credit card transactions within the date range\n- All loan transactions within the date range\n\nThis endpoint is served by the API Gateway and internally calls the Customer, Accounts, Credit Cards, and Loans microservices.\n\n**Date format:** YYYY-MM-DD"
+          },
+          "response": [
+            {
+              "name": "200 OK - Customer Summary",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/composite/customersummary?idNumber={{id_number}}&startDate={{start_date}}&endDate={{end_date}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "composite",
+                    "customersummary"
+                  ],
+                  "query": [
+                    {
+                      "key": "idNumber",
+                      "value": "{{id_number}}",
+                      "description": "13-digit South African ID Number"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "{{start_date}}",
+                      "description": "Start date in YYYY-MM-DD format"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "{{end_date}}",
+                      "description": "End date in YYYY-MM-DD format"
+                    }
+                  ]
+                },
+                "description": "Aggregated composite endpoint that fetches a full customer summary including:\n- Customer profile details\n- All account transactions within the date range\n- All credit card transactions within the date range\n- All loan transactions within the date range\n\nThis endpoint is served by the API Gateway and internally calls the Customer, Accounts, Credit Cards, and Loans microservices.\n\n**Date format:** YYYY-MM-DD"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"customer\": {\n    \"idNumber\": \"9001015009087\",\n    \"firstname\": \"John\",\n    \"lastName\": \"Doe\",\n    \"address\": \"123 Main Street, Cape Town, 8001\",\n    \"email\": \"john.doe@example.com\",\n    \"mobileNumber\": \"0821234567\"\n  },\n  \"accountTransactions\": [\n    {\n      \"transactionId\": 1,\n      \"accountNumber\": 1001,\n      \"description\": \"Grocery shopping\",\n      \"amount\": 350.00,\n      \"category\": \"FOOD\",\n      \"date\": \"2024-01-15\"\n    }\n  ],\n  \"creditCardTransactions\": [\n    {\n      \"transactionId\": 1,\n      \"cardNumber\": 4000123456789010,\n      \"description\": \"Online purchase - Amazon\",\n      \"amount\": 1299.99,\n      \"category\": \"SHOPPING\",\n      \"timestamp\": \"2024-01-15\"\n    }\n  ],\n  \"loanTransactions\": [\n    {\n      \"transactionId\": 1,\n      \"loanNumber\": 2001,\n      \"description\": \"Monthly loan repayment\",\n      \"amount\": 2500.00,\n      \"category\": \"TRANSFER\",\n      \"timestamp\": \"2024-01-31\"\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Endpoints for the API Gateway / Aggregation layer running on port 8071"
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8071"
+    },
+    {
+      "key": "id_number",
+      "value": "9001015009087"
+    },
+    {
+      "key": "account_number",
+      "value": "1001"
+    },
+    {
+      "key": "card_number",
+      "value": "4000123456789010"
+    },
+    {
+      "key": "loan_number",
+      "value": "2001"
+    },
+    {
+      "key": "start_date",
+      "value": "2024-01-01"
+    },
+    {
+      "key": "end_date",
+      "value": "2024-12-31"
+    }
+  ]
+}

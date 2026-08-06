@@ -12,7 +12,7 @@ import za.co.capitec.coreapi.dtos.loans.response.LoanTransactionResponse;
 @AllArgsConstructor
 public class CustomerSummaryDto {
     private CustomersRecord customersRecord;
-    private TransactionResponse transactionResponse; //-- AccountTransactions to be exact
+    private TransactionResponse accountTransactionResponse; //-- AccountTransactions to be exact
     private CreditCardTransactionResponse creditCardTransactionResponse;
     private LoanTransactionResponse loanTransactionResponse;
 }

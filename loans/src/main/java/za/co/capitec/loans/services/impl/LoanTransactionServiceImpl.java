@@ -54,8 +54,10 @@ public class LoanTransactionServiceImpl implements ILoanTransactionService {
         //-- 1. Credit the account
         //-- add the to the original amount
         BigDecimal totalAmount = loan.getLoanAmount().add(amount);
-        //-- 2. set the credit card balance
+        //-- 2. set the loan balance
         loan.setLoanAmount(totalAmount);
+        loan.setOutstandingAmount(loan.getOutstandingAmount().subtract(amount));
+        loan.setOutstandingBalance(loan.getOutstandingAmount().subtract(amount));
         //-- 3. save the new balance amount
         ResponseDto responseDto = loanService.saveLoan(loan);
         //-- 4. Create a credit card transaction

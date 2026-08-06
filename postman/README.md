@@ -1,139 +1,117 @@
-# Transaction Aggregation API — Postman Collection
+# Transaction Aggregation API - Postman Collection
 
-This folder contains the Postman collection and environment for all microservices in the **Transaction Aggregation API**.
+This folder contains Postman assets for the Transaction Aggregation API microservices and composite endpoint.
 
 ## Files
 
 | File | Description |
 |------|-------------|
-| `transaction-aggregation-api.postman_collection.json` | Full Postman collection covering all modules |
-| `transaction-aggregation-api.local.postman_environment.json` | Environment variables for local development |
+| `Transaction Aggregation API.postman_collection.json` | Primary collection with all requests and sample responses |
+| `transaction-aggregation-api.local.postman_environment.json` | Local environment values |
+| `transaction-aggregation-api.postman_collection.json` | Legacy/alternate collection file |
 
----
+## Import Steps
 
-## How to Import
-
-1. Open **Postman**
-2. Click **Import** (top-left)
-3. Import both files:
-   - `transaction-aggregation-api.postman_collection.json`
+1. Open Postman.
+2. Click **Import**.
+3. Import:
+   - `Transaction Aggregation API.postman_collection.json`
    - `transaction-aggregation-api.local.postman_environment.json`
-4. Select the **"Transaction Aggregation API - Local"** environment from the environment dropdown
+4. Select the local environment before running requests.
 
----
+## Base URL and Routing
 
-## Access Pattern
-
-All requests in the collection now use one shared variable:
+All requests use:
 
 - `base_url = http://localhost:8071`
 
-All service calls are routed through API Gateway:
+All service calls go through API Gateway with these prefixes:
 
 - Accounts: `/capitec/accounts/**`
 - Customer: `/capitec/customers/**`
 - Credit Cards: `/capitec/cards/**`
 - Loans: `/capitec/loans/**`
+- Composite endpoint: `/api/composite/customersummary`
 
-## Service Port Mapping (Local / Docker)
+## Collection Overview
 
-| Service          | Host Port | Container Port |
-|------------------|-----------|----------------|
-| Eureka Server    | 8070      | 8070           |
-| API Gateway      | 8071      | 8071           |
-| Accounts         | 8081      | 8080           |
-| Customer         | 8082      | 8080           |
-| Credit Cards     | 8083      | 8080           |
-| Loans            | 8084      | 8080           |
+### Accounts Service
 
----
+Base path: `{{base_url}}/capitec/accounts/api/v1`
 
-## Collection Structure
+- `GET /{account_number}`
+- `GET /accounts?idNumber={{id_number}}`
+- `POST /`
+- `PUT /{account_number}`
+- `PATCH /{account_number}`
+- `DELETE /{account_number}`
+- `POST /transaction`
+- `GET /transaction/{{id_number}}/{{start_date}}/{{end_date}}?pageNo=0&pageSize=10&sortBy=date&sortDir=desc`
 
-### 📁 Accounts Service (via `{{base_url}}/capitec/accounts`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/v1/{accountNumber}` | Get account by account number |
-| GET | `/api/v1/accounts?idNumber={idNumber}` | Get all accounts by ID number |
-| POST | `/api/v1/` | Create a new account |
-| PUT | `/api/v1/{accountNumber}` | Full update of an account |
-| PATCH | `/api/v1/{accountNumber}` | Partial update of an account |
-| DELETE | `/api/v1/{accountNumber}` | Delete an account |
-| POST | `/api/v1/transaction` | Post a transaction to an account |
-| GET | `/api/v1/transaction/{idNumber}/{startDate}/{endDate}` | Get paginated account transactions (bank statement) |
+### Customer Service
 
-### 📁 Customer Service (via `{{base_url}}/capitec/customers`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/v1/{idNumber}` | Get customer by ID number |
-| GET | `/api/v1/customers` | Get all customers (paginated) |
-| POST | `/api/v1/` | Create a new customer |
-| PUT | `/api/v1/{idNumber}` | Full update of a customer |
-| PATCH | `/api/v1/{idNumber}` | Partial update of a customer |
-| DELETE | `/api/v1/{idNumber}` | Delete a customer |
+Base path: `{{base_url}}/capitec/customers/api/v1`
 
-### 📁 Credit Cards Service (via `{{base_url}}/capitec/cards`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/v1/{cardNumber}` | Get credit card by card number |
-| GET | `/api/v1/creditcards?idNumber={idNumber}` | Get all credit cards by ID number |
-| POST | `/api/v1/` | Create a new credit card |
-| PUT | `/api/v1/{cardNumber}` | Full update of a credit card |
-| PATCH | `/api/v1/{cardNumber}` | Partial update of a credit card |
-| DELETE | `/api/v1/{cardNumber}` | Delete a credit card |
-| POST | `/api/v1/transaction` | Post a transaction to a credit card |
-| GET | `/api/v1/transaction/{idNumber}/{startDate}/{endDate}` | Get paginated credit card transactions |
+- `GET /{{id_number}}`
+- `GET /customers?pageNo=0&pageSize=10&sortBy=lastName&sortDir=asc`
+- `POST /`
+- `PUT /{{id_number}}`
+- `PATCH /{{id_number}}`
+- `DELETE /{{id_number}}`
 
-### 📁 Loans Service (via `{{base_url}}/capitec/loans`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/v1/{loanNumber}` | Get loan by loan number |
-| GET | `/api/v1/loans?idNumber={idNumber}` | Get all loans by ID number |
-| POST | `/api/v1/` | Create a new loan |
-| PUT | `/api/v1/{loanNumber}` | Full update of a loan |
-| PATCH | `/api/v1/{loanNumber}` | Partial update of a loan |
-| DELETE | `/api/v1/{loanNumber}` | Delete a loan |
-| POST | `/api/v1/transaction` | Post a transaction to a loan |
-| GET | `/api/v1/transaction/{idNumber}/{startDate}/{endDate}` | Get paginated loan transactions |
+### Credit Cards Service
 
-### 📁 API Gateway (`{{base_url}}`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/composite/customersummary?idNumber=&startDate=&endDate=` | Get full customer summary (aggregated across all services) |
+Base path: `{{base_url}}/capitec/cards/api/v1`
 
-## Environment Variables
+- `GET /{{card_number}}`
+- `GET /creditcards?idNumber={{id_number}}`
+- `POST /`
+- `PUT /{{card_number}}`
+- `PATCH /{{card_number}}`
+- `DELETE /{{card_number}}`
+- `POST /transaction`
+- `GET /transaction/{{id_number}}/{{start_date}}/{{end_date}}?pageNo=0&pageSize=10&sortBy=date&sortDir=desc`
 
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-| `base_url` | `http://localhost:8071` | Shared API Gateway URL for all requests |
-| `id_number` | `9001015009087` | Sample SA ID number (13 digits) |
-| `account_number` | `1001` | Sample account number |
-| `card_number` | `4000123456789010` | Sample credit card number |
-| `loan_number` | `2001` | Sample loan number |
-| `start_date` | `2024-01-01` | Start date for transaction queries |
-| `end_date` | `2024-12-31` | End date for transaction queries |
+### Loans Service
 
----
+Base path: `{{base_url}}/capitec/loans/api/v1`
+
+- `GET /{{loan_number}}`
+- `GET /loans?idNumber={{id_number}}`
+- `POST /`
+- `PUT /{{loan_number}}`
+- `PATCH /{{loan_number}}`
+- `DELETE /{{loan_number}}`
+- `POST /transaction`
+- `GET /transaction/{{id_number}}/{{start_date}}/{{end_date}}?pageNo=0&pageSize=10&sortBy=date&sortDir=desc`
+
+### API Gateway (Composite)
+
+- `GET {{base_url}}/api/composite/customersummary?idNumber={{id_number}}&startDate={{start_date}}&endDate={{end_date}}`
+
+Returns an aggregated summary containing customer profile plus account, card, and loan transactions.
+
+## Collection Variables (from collection file)
+
+| Variable | Default |
+|----------|---------|
+| `base_url` | `http://localhost:8071` |
+| `id_number` | `9001015009087` |
+| `account_number` | `1001` |
+| `card_number` | `4000123456789010` |
+| `loan_number` | `2001` |
+| `start_date` | `2024-01-01` |
+| `end_date` | `2024-12-31` |
+
+## Notes
+
+- The collection includes sample `200/201/204` responses for most requests.
+- Some account requests include test scripts that capture `account_number` from responses into collection variables.
+- Date parameters use ISO format: `YYYY-MM-DD`.
 
 ## Enum Reference
 
-### Transaction Categories
-`FOOD`, `TRANSPORT`, `SHOPPING`, `UTILITIES`, `INSURANCE`, `MEDICAL`, `SALARY`, `TRANSFER`, `UNKNOWN`, `CREDIT`, `DEBIT`, `DEPOSIT`, `WITHDRAWAL`, `INTEREST`, `FEE`, `CURRENT`, `SAVINGS`
-
-### Credit Card Types
-`VISA`, `MASTERCARD`, `AMEX`
-
-### Loan Types
-`PERSONAL`, `HOME`, VEHICLE`, `BUSINESS`, `STUDENT`
-
----
-
-## Validation Rules
-
-| Field | Format |
-|-------|--------|
-| `idNumber` | Must be exactly 13 digits |
-| `mobileNumber` | South African format: `+27` or `0` prefix followed by 9 digits |
-| `email` | Standard email format |
-| `startDate` / `endDate` | ISO date format: `YYYY-MM-DD` |
+- Transaction categories: `FOOD`, `TRANSPORT`, `SHOPPING`, `UTILITIES`, `INSURANCE`, `MEDICAL`, `SALARY`, `TRANSFER`, `UNKNOWN`, `CREDIT`, `DEBIT`, `DEPOSIT`, `WITHDRAWAL`, `INTEREST`, `FEE`, `CURRENT`, `SAVINGS`
+- Credit card types: `VISA`, `MASTERCARD`, `AMEX`
+- Loan types: `PERSONAL`, `HOME`, `VEHICLE`, `BUSINESS`, `STUDENT`
 

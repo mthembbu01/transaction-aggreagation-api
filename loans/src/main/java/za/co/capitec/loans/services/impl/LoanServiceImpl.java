@@ -34,8 +34,10 @@ public class LoanServiceImpl implements ILoanService {
         //-- If one of the customer unique attributes exists, it becomes an unprocessable entity
         isExist(createLoanDto.getIdNumber(), createLoanDto.getMobileNumber());
         //-- 2. Save the newly created loan
-        loan.setLoanNumber(Long.parseLong(LoanUtils.generateLoanNumber()));
+        loan.setLoanNumber(LoanUtils.generateLoanNumber());
+        loan.setLoanAmount(createLoanDto.getLoanAmount());
         loan.setOutstandingBalance(createLoanDto.getLoanAmount());
+        loan.setMonthlyInstalment(createLoanDto.getMonthlyInstalment());
         loan.setStatus(LoanStatus.ACTIVE);
         loan.setActiveSw(true);
         loanRepository.save(loan);
@@ -121,6 +123,7 @@ public class LoanServiceImpl implements ILoanService {
         //-- 1. Find the loan by loanNumber
         Loans loan = findLoan(loanNumber);
         //-- 2. Soft delete
+
         loan.setOutstandingBalance(BigDecimal.ZERO);
         loan.setActiveSw(false);
         loan.setStatus(LoanStatus.CLOSED);

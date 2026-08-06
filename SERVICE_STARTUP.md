@@ -14,7 +14,7 @@ This guide explains how to properly start all services to avoid connection error
 
 ### 1. Eureka Server (Port 8070)
 ```zsh
-cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/eureka-server"
+cd "/eureka-server"
 ./mvnw clean install
 ./mvnw spring-boot:run
 ```
@@ -24,7 +24,7 @@ cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api
 
 #### Terminal 2: Accounts Service
 ```zsh
-cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/accounts"
+cd "/accounts"
 ./mvnw clean install
 ./mvnw spring-boot:run
 ```
@@ -32,7 +32,7 @@ cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api
 
 #### Terminal 3: Customer Service
 ```zsh
-cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/customer"
+cd "/customer"
 ./mvnw clean install
 ./mvnw spring-boot:run
 ```
@@ -40,7 +40,7 @@ cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api
 
 #### Terminal 4: Credit Cards Service
 ```zsh
-cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/creditcards"
+cd "/creditcards"
 ./mvnw clean install
 ./mvnw spring-boot:run
 ```
@@ -48,7 +48,7 @@ cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api
 
 #### Terminal 5: Loans Service
 ```zsh
-cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/loans"
+cd "/loans"
 ./mvnw clean install
 ./mvnw spring-boot:run
 ```
@@ -58,7 +58,7 @@ cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api
 **ONLY after all microservices have registered with Eureka**
 
 ```zsh
-cd "/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/api-gateway"
+cd "/api-gateway"
 ./mvnw clean install
 ./mvnw spring-boot:run
 ```
@@ -120,36 +120,36 @@ Create a shell script `start-all.sh`:
 
 # Terminal 1: Eureka
 open -a Terminal && sleep 1
-tell app "Terminal" to do script "cd '/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/eureka-server' && ./mvnw spring-boot:run"
+tell app "Terminal" to do script "cd '/eureka-server' && ./mvnw spring-boot:run"
 
 sleep 10
 
 # Terminal 2: Accounts
 open -a Terminal && sleep 1
-tell app "Terminal" to do script "cd '/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/accounts' && ./mvnw spring-boot:run"
+tell app "Terminal" to do script "cd '/accounts' && ./mvnw spring-boot:run"
 
 # Terminal 3: Customer
 open -a Terminal && sleep 1
-tell app "Terminal" to do script "cd '/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/customer' && ./mvnw spring-boot:run"
+tell app "Terminal" to do script "cd '/customer' && ./mvnw spring-boot:run"
 
 # Terminal 4: Credit Cards
 open -a Terminal && sleep 1
-tell app "Terminal" to do script "cd '/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/creditcards' && ./mvnw spring-boot:run"
+tell app "Terminal" to do script "cd '/creditcards' && ./mvnw spring-boot:run"
 
 # Terminal 5: Loans
 open -a Terminal && sleep 1
-tell app "Terminal" to do script "cd '/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/loans' && ./mvnw spring-boot:run"
+tell app "Terminal" to do script "cd '/loans' && ./mvnw spring-boot:run"
 
 sleep 15
 
 # Terminal 6: API Gateway
 open -a Terminal && sleep 1
-tell app "Terminal" to do script "cd '/Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api/api-gateway' && ./mvnw spring-boot:run"
+tell app "Terminal" to do script "cd '/api-gateway' && ./mvnw spring-boot:run"
 ```
 
 Or use **Docker Compose** (recommended):
 ```bash
-cd /Users/mac/Repositories/labs/capitec-assessment/transaction-aggreagation-api
+cd /transaction-aggreagation-api
 docker-compose up -d
 ```
 
@@ -158,9 +158,11 @@ docker-compose up -d
 Once all services are UP in Eureka, import the collection from the `postman/` folder at the project root:
 
 1. Open Postman → **Import**
-2. Import `postman/transaction-aggregation-api.postman_collection.json`
+2. Import `postman/Transaction Aggregation API.postman_collection.json`
 3. Import `postman/transaction-aggregation-api.local.postman_environment.json`
 4. Select **"Transaction Aggregation API - Local"** from the environment dropdown
+
+> Note: `postman/transaction-aggregation-api.postman_collection.json` is still present, but `postman/Transaction Aggregation API.postman_collection.json` is the primary collection to use.
 
 The collection covers all modules with pre-populated sample values:
 

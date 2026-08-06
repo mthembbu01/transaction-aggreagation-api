@@ -11,6 +11,31 @@ spring:
             locator:
               enabled: false
               lower-case-service-id: true
+          routes:
+            - id: customers-service
+              uri: lb://CUSTOMERS
+              predicates:
+                - Path=/capitec/customer/**
+              filters:
+                - StripPrefix=2
+            - id: accounts-service
+              uri: lb://ACCOUNTS
+              predicates:
+                - Path=/capitec/accounts/**
+              filters:
+                - StripPrefix=2
+            - id: creditcards-service
+              uri: lb://CARDS
+              predicates:
+                - Path=/capitec/creditcards/**
+              filters:
+                - StripPrefix=2
+            - id: loans-service
+              uri: lb://LOANS
+              predicates:
+                - Path=/capitec/loans/**
+              filters:
+                - StripPrefix=2
 
 server:
   port: 8071
