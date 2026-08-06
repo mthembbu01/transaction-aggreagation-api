@@ -11,7 +11,7 @@ import za.co.capitec.coreapi.dtos.loans.response.LoanTransactionResponse;
 
 public interface CustomerTransactionsSummaryClient {
 
-    @GetExchange(value = "/capitec/customer/api/v1/{idNumber}",accept = "application/json")
+    @GetExchange(value = "/capitec/customers/api/v1/{idNumber}",accept = "application/json")
     Mono<ResponseEntity<CustomersRecord>> fetchCustomerDetails(@PathVariable(value = "idNumber") String idNumber);
 
     @GetExchange(value = "/capitec/accounts/api/v1/transaction/{idNumber}/{startDate}/{endDate}?pageNo=0&pageSize=10&sortBy=date&sortDir=asc",accept = "application/json")
@@ -19,7 +19,7 @@ public interface CustomerTransactionsSummaryClient {
                                                                        @PathVariable(value = "startDate") String startDate,
                                                                        @PathVariable(value = "endDate") String endDate);
 
-    @GetExchange(value = "/capitec/creditcards/api/v1/transaction/{idNumber}/{startDate}/{endDate}?pageNo=0&pageSize=10&sortBy=date&sortDir=asc",accept = "application/json")
+    @GetExchange(value = "/capitec/cards/api/v1/transaction/{idNumber}/{startDate}/{endDate}?pageNo=0&pageSize=10&sortBy=date&sortDir=asc",accept = "application/json")
     Mono<ResponseEntity<CreditCardTransactionResponse>> fetchCreditCardTransactions(@PathVariable(value = "idNumber") String idNumber,
                                                                                     @PathVariable(value = "startDate") String startDate,
                                                                                     @PathVariable(value = "endDate") String endDate);

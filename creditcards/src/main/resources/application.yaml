@@ -53,7 +53,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
-  #-- enable the gzip configs
+   #-- enable the gzip configs
 server:
   compression:
     enabled: true
@@ -61,3 +61,24 @@ server:
     min-response-size: 2KB
   port: 0
   shutdown: graceful
+
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+      probes:
+        enabled: true
+
+#-- open-api and swagger configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger.html

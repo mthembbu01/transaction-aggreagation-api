@@ -1,11 +1,10 @@
 package za.co.capitec.accounts.exceptions;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.context.request.WebRequest;
 import za.co.capitec.coreapi.exceptions.ApiErrorResponse;
 import za.co.capitec.coreapi.exceptions.InsufficientFundsException;
 import za.co.capitec.coreapi.exceptions.ResourceAlreadyExistsException;
@@ -20,14 +19,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ApiErrorResponse handleCustomerAlreadyExistsException(
             ResourceAlreadyExistsException ex,
-            HttpServletRequest request,
-            HandlerMethod method) {
+            WebRequest webRequest) {
 
         return new ApiErrorResponse(
                 HttpStatus.CONFLICT,
                 ex.getMessage(),
-                request.getRequestURI(),
-                method.getMethod().getName(),
+                getRequestUri(webRequest),
+                "N/A",
                 ZonedDateTime.now()
         );
     }
@@ -36,14 +34,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ApiErrorResponse handleCustomerNotFoundException(
             ResourceNotFoundException ex,
-            HttpServletRequest request,
-            HandlerMethod method) {
+            WebRequest webRequest) {
 
         return new ApiErrorResponse(
                 HttpStatus.NOT_FOUND,
                 ex.getMessage(),
-                request.getRequestURI(),
-                method.getMethod().getName(),
+                getRequestUri(webRequest),
+                "N/A",
                 ZonedDateTime.now()
         );
     }
@@ -52,14 +49,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ApiErrorResponse handleIllegalArgumentException(
             IllegalArgumentException ex,
-            HttpServletRequest request,
-            HandlerMethod method) {
+            WebRequest webRequest) {
 
         return new ApiErrorResponse(
                 HttpStatus.BAD_REQUEST,
                 ex.getMessage(),
-                request.getRequestURI(),
-                method.getMethod().getName(),
+                getRequestUri(webRequest),
+                "N/A",
                 ZonedDateTime.now()
         );
     }
@@ -68,14 +64,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InsufficientFundsException.class)
     public ApiErrorResponse handleInsufficientFundsException(
             InsufficientFundsException ex,
-            HttpServletRequest request,
-            HandlerMethod method) {
+            WebRequest webRequest) {
 
         return new ApiErrorResponse(
                 HttpStatus.UNPROCESSABLE_ENTITY,
                 ex.getMessage(),
-                request.getRequestURI(),
-                method.getMethod().getName(),
+                getRequestUri(webRequest),
+                "N/A",
                 ZonedDateTime.now()
         );
     }
@@ -84,15 +79,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ApiErrorResponse handleGenericException(
             Exception ex,
-            HttpServletRequest request,
-            HandlerMethod method) {
+            WebRequest webRequest) {
 
         return new ApiErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 ex.getMessage(),
-                request.getRequestURI(),
-                method.getMethod().getName(),
+                getRequestUri(webRequest),
+                "N/A",
                 ZonedDateTime.now()
         );
+    }
+
+    private String getRequestUri(WebRequest webRequest) {
+        return webRequest.getDescription(false).replace("uri=", "");
     }
 }

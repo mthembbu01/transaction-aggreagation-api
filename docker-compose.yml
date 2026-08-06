@@ -12,7 +12,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql/init-db.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - capitec-network
     healthcheck:
@@ -84,7 +84,7 @@ services:
       dockerfile: Dockerfile
     container_name: customer-service
     environment:
-      SPRING_APPLICATION_NAME: customer
+      SPRING_APPLICATION_NAME: CUSTOMERS
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_cptc_customers?schema=public
       SPRING_DATASOURCE_USERNAME: dev_cptc_user
       SPRING_DATASOURCE_PASSWORD: localpass
@@ -117,7 +117,7 @@ services:
       dockerfile: Dockerfile
     container_name: creditcards-service
     environment:
-      SPRING_APPLICATION_NAME: creditcards
+      SPRING_APPLICATION_NAME: CARDS
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_cptc_creditcards?schema=public
       SPRING_DATASOURCE_USERNAME: dev_cptc_user
       SPRING_DATASOURCE_PASSWORD: localpass

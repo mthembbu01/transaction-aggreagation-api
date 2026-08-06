@@ -15,7 +15,7 @@ spring:
             - id: customers-service
               uri: lb://CUSTOMERS
               predicates:
-                - Path=/capitec/customer/**
+                - Path=/capitec/customer/**,/capitec/customers/**
               filters:
                 - StripPrefix=2
             - id: accounts-service
@@ -27,7 +27,7 @@ spring:
             - id: creditcards-service
               uri: lb://CARDS
               predicates:
-                - Path=/capitec/creditcards/**
+                - Path=/capitec/creditcards/**,/capitec/cards/**
               filters:
                 - StripPrefix=2
             - id: loans-service
