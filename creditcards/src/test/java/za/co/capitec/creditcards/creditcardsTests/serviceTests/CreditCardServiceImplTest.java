@@ -94,7 +94,7 @@ class CreditCardServiceImplTest {
                 CreditCardType.VISA,
                 CreditCardsUtilities.setContactNumber(),
                 CreditCardsUtilities.setIdNumber(),
-                3000.00,
+                new BigDecimal("3000.00"),
                 LocalDate.now().minusMonths(1),
                 LocalDate.now().plusYears(2),
                 true);
@@ -104,7 +104,7 @@ class CreditCardServiceImplTest {
                         .cardType(createDto.getCardType())
                         .mobileNumber(createDto.getMobileNumber())
                         .idNumber(createDto.getIdNumber())
-                        .creditLimit(BigDecimal.valueOf(createDto.getCreditLimit()))
+                        .creditLimit(createDto.getCreditLimit())
                         .issueDate(createDto.getIssueDate())
                         .expiryDate(createDto.getExpiryDate())
                         .activeSw(createDto.isActiveSw())
